@@ -5,8 +5,9 @@ from django.db.models.signals import post_save
 
 class CustomUser(models.Model):
     user = models.OneToOneField(User, unique=True)
-    bugurts = models.ManyToManyField('Bugurt')
-
+    bugurts = models.ManyToManyField('Bugurt', blank=True)
+    likes = models.ManyToManyField('Like', blank=True)
+    
     class Meta:
         verbose_name = u'Аккаунт'
         verbose_name_plural = u'Аккаунты'
@@ -27,10 +28,19 @@ class Bugurt(models.Model):
     text = models.TextField(max_length=10000)
     date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(CustomUser)
-    rating = models.PositiveIntegerField(max_length=10)
+    likes = models.ManyToManyField('Like', blank=True)
+
     class Meta:
         verbose_name = u'Бугурт'
         verbose_name_plural = u'Бугурты'
 
     def __unicode__(self):
         return self.name
+
+class Like(models.Model):
+    user_id = models.ForeignKey(CustomUser)
+    bugurt_id = models.ForeignKey(Bugurt)
+
+    class Meta:
+        verbose_name = u'Голос'
+        verbose_name_plural = u'Голоса'

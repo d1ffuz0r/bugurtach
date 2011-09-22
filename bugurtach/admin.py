@@ -7,5 +7,9 @@ class CustomUserAdmin(admin.ModelAdmin):
 class BugurtAdmin(admin.ModelAdmin):
     pass
 
+class LikeAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Bugurt, BugurtAdmin)
+admin.site.register(Like, LikeAdmin)
