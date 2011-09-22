@@ -29,6 +29,7 @@ class Bugurt(models.Model):
     date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(CustomUser)
     likes = models.ManyToManyField('Like', blank=True)
+    tags = models.ManyToManyField('Tag', blank=True)
 
     class Meta:
         verbose_name = u'Бугурт'
@@ -44,3 +45,17 @@ class Like(models.Model):
     class Meta:
         verbose_name = u'Голос'
         verbose_name_plural = u'Голоса'
+
+    #def __unicode__(self):
+    #    return self.user_id
+
+class Tag(models.Model):
+    title = models.CharField(max_length=100)
+    bugurts = models.ManyToManyField(Bugurt)
+
+    class Meta:
+        verbose_name = u'Тег'
+        verbose_name_plural = u'Теги'
+
+    def __unicode__(self):
+        return self.title

@@ -8,6 +8,12 @@
                 <div class="entry">
                     {{ bugurt.text|safe }}
                     <div><a href="/bugurts/{{ bugurt.id }}" class="links">View Full Bugurt</a></div>
+                    <div>Теги:
+                        {% for tag in bugurt.tags.all %}
+                            <a href="/tags/{{ tag.title }}">{{ tag.title }}</a>
+                        {% endfor %}
+                    </div>
+                    <div>Понравилось: {{ bugurt.likes.count }}</div>
                 </div>
             </div>
         {% endfor %}

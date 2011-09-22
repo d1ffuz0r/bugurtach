@@ -7,5 +7,13 @@ from models import Bugurt
 def homepage(request):
     bugurts = Bugurt.objects.all()
     comments = [{'title':'text static comment', 'url': '/bugurts/1#1'}]
-    top = bugurts.all().aggregate(Max('rating'))
-    return {'title': 'homepage', 'bugurts': bugurts, 'latest_bugurts': bugurts.order_by('-date')[:10], 'latest_comments': comments, 'top_bugurt': top}
+    top = bugurts.all().aggregate(Max('likes'))
+    return {'title': 'homepage',
+            'bugurts': bugurts,
+            'latest_bugurts': bugurts.order_by('-date')[:10],
+            'latest_comments': comments,
+            'top_bugurt': top}
+
+@render_to('settings.html')
+def user_settings(request):
+    return {'test': 'static'}
