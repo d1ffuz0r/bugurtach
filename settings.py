@@ -110,7 +110,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.contrib.csrf.middleware.CsrfResponseMiddleware',
 )
 
 ROOT_URLCONF = 'src.urls'
@@ -124,8 +123,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'bugurtach',
 )
-
+AUTH_PROFILE_MODULE = 'bugurtach.CustomUser'
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error.
