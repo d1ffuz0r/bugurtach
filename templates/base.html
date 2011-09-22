@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Бугуртач - {{ title }}</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<div id="wrapper">
+	<div id="wrapper-bgtop">
+		<div id="header">
+            <a href="/"><span id="logo"></span></a>
+			<hr />
+			<!-- end #logo -->
+			<div id="menu">
+				<ul>
+					<li><a href="#" class="first">Главная</a></li>
+					<li class="current_page_item"><a href="#">My blog</a></li>
+					<li><a href="#">About</a></li>
+					<li><a href="#">username</a></li>
+					<li><a href="#">Settings</a></li>
+					<li><a href="#" class="last">logout</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- end #header -->
+		<!-- end #header-wrapper -->
+		<div id="page">
+			<div id="content">
+                {% block content %}{% endblock %}
+			</div>
+			<!-- end #content -->
+			<div id="sidebar">
+                {% block rightbar %}{% endblock %}
+			</div>
+			<!-- end #sidebar -->
+			<div style="clear: both;">&nbsp;</div>
+		</div>
+		<!-- end #page -->
+	</div>
+</div>
+<div id="footer-bgcontent">
+	<div id="footer">
+		<p>Copyright (c) 2008 Sitename.com. All rights reserved. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+	</div>
+</div>
+<!-- end #footer -->
+<div id="face" onclick="alert('анус себе дёрни, ПЕС');"></div>
+</body>
+</html>
