@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="post">
+        <p class="meta">{{ bugurt.date|date:'' }} Posted by <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></p>
+        <h2 class="title">{{ bugurt.name }}</h2>
+        <div class="entry">
+            {{ bugurt.text|safe }}
+            <div>Понравилось: {{ bugurt.likes.count }}</div>
+        </div>
+    </div>
+{% endblock %}
+{% block rightbar %}
+<ul>
+    {% ifequal bugurt.author.id user.id %}
+    <li>
+        <h2>Options</h2>
+        <ul>
+            <li><a href="{{ bugurt.absolute_url }}edit/">Edit</a></li>
+            <li><a href="{{ bugurt.absolute_url }}delete/">Delete</a></li>
+        </ul>
+    </li>
+    {% endifequal %}
+    <li>
+        <h2>Tags</h2>
+        <ul>
+            {% if bugurt.tags.count %}
+                {% for tag in bugurt.tags.all %}
+                    <li><a href="/tags/{{ tag.title }}/">{{ tag.title }}</a></li>
+                {% endfor %}
+            {% else %}
+                <li><a>Not tags</a></li>
+            {% endif %}
+        </ul>
+    </li>
+</ul>
+{% endblock %}

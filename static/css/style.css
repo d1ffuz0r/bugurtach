@@ -470,3 +470,21 @@ hr { display: none; }
 	height: 120px;
 	background: url("/static/images/face.png") no-repeat right bottom;
 }
+#login-form{
+    float: right;
+}
+
+.like{
+    width: 15px;
+    height: 47px;
+    cursor: pointer;
+    float: right;
+    background: url(/static/images/like.gif) no-repeat;
+}
+.dislike{
+    width: 15px;
+    height: 47px;
+    cursor: pointer;
+    float: right;
+    background: url(/static/images/like.gif) no-repeat -20px 0;
+}

@@ -1,26 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-    {% csrf_token %}
     {% if bugurts %}
         {% for bugurt in bugurts %}
             <div class="post">
-                <p class="meta">{{ bugurt.date|date:'' }} Posted by <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></p>
-                <h2 class="title"><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a></h2>
+                <p class="meta">{{ bugurt.date|date:'' }} Posted by <a href="#">{{ bugurt.author }}</a></p>
+                <h2 class="title"><a href="/bugurts/{{ bugurt.id }}">{{ bugurt.name }}</a></h2>
                 <div class="entry">
                     {{ bugurt.text|safe }}
-                    <div><a href="{{ bugurt.get_absolute_url }}" class="links">View Full Bugurt</a></div>
+                    <div><a href="/bugurts/{{ bugurt.id }}" class="links">View Full Bugurt</a></div>
                     {% if bugurt.tags.count %}
                         <div>Теги:
                             {% for tag in bugurt.tags.all %}
-                                <a href="/tags/{{ tag.title }}/">{{ tag.title }}</a>
+                                <a href="/tags/{{ tag.title }}">{{ tag.title }}</a>
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <div>
-                        Понравилось: {{ bugurt.likes }}
-                        <div class="like" id="{{ bugurt.id }}"></div>
-                        <div class="dislike" id="{{ bugurt.id }}"></div>
-                    </div>
+                    <div>Понравилось: {{ bugurt.likes.count }}</div>
                 </div>
             </div>
         {% endfor %}
@@ -39,7 +34,7 @@
         <ul>
             {% if latest_bugurts %}
                 {% for bugurt in latest_bugurts %}
-                    <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> from <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></li>
+                    <li><a href="/bugurts/{{ bugurt.id }}">{{ bugurt.name }}</a></li>
                 {% endfor %}
             {% else %}
                 <li><a>Not bugurts</a></li>
@@ -56,18 +51,7 @@
         {% else %}
             <li><a>Not commentaries</a></li>
         {% endif %}
-        </ul>
-    </li>
-    <li>
-        <h2>Tags</h2>
-        <ul>
-            {% if tags %}
-                {% for tag in tags %}
-                    <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>,
-                {% endfor %}
-            {% else %}
-                <li><a>Not tags</a></li>
-            {% endif %}
+
         </ul>
     </li>
 </ul>

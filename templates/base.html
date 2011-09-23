@@ -6,6 +6,8 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bugurt.js"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -16,9 +18,15 @@
 			<!-- end #logo -->
 			<div id="menu">
 				<ul>
-					<li class="first"><a href="/bugurts/{{ user }}">{{ user }}</a></li>
-					<li><a href="/settings">settings</a></li>
-					<li><a href="/logout" class="last">logout</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="first"><a href="/bugurts/add/">Add bugurt</a></li>
+					    <li class="first"><a href="/user/{{ user }}/">{{ user }}</a></li>
+                        <li><a href="/settings">settings</a></li>
+                        <li><a href="/logout" class="last">logout</a></li>
+                    {% else %}
+                        <li><a href="/login">login</a></li>
+                        <li><a href="/registration">registration</a></li>
+                    {% endif %}
 				</ul>
 			</div>
 		</div>
@@ -44,6 +52,6 @@
 	</div>
 </div>
 <!-- end #footer -->
-<div id="face" onclick="alert('анус себе дёрни, ПЕС');"></div>
+<div id="face"></div>
 </body>
 </html>

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form action="/bugurts/add/" method="POST">
+        <p>{% csrf_token %}</p>
+        {{ add_form.as_p }}
+        <p><input type="hidden" value="{{ user.id }}" name="author"></p>
+        <p><input type="submit" value="Add"></p>
+    </form>
+{% endblock %}

@@ -13,7 +13,11 @@ class LikeAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     pass
 
+class BugurtTagsAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Bugurt, BugurtAdmin)
 admin.site.register(Like, LikeAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(BugurtTags, BugurtTagsAdmin)
