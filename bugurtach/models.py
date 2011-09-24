@@ -74,7 +74,7 @@ class Bugurt(models.Model):
         if Like.objects.filter(user_id=user).filter(bugurt_id=bugurt):
             return False
         else:
-            Like.objects.create(bugurt_id=Bugurt.objects.get(id=bugurt), user_id=user)
+            Like.objects.create(bugurt_id=Bugurt.objects.get(id=bugurt), user_id=user, type=type)
             bugu = cls.objects.get(id=bugurt)
             if type == 'like':
                 bugu.likes += 1
@@ -82,18 +82,19 @@ class Bugurt(models.Model):
             if type == 'dislike':
                 bugu.likes -= 1
                 bugu.save()
-        return True
+        return bugu.likes
     
 class Like(models.Model):
     user_id = models.ForeignKey(User)
     bugurt_id = models.ForeignKey(Bugurt)
+    type = models.CharField(max_length=10, blank=False)
 
     class Meta:
         verbose_name = u'Голос'
         verbose_name_plural = u'Голоса'
 
-    #def __unicode__(self):
-    #    return self.user_id
+    def __unicode__(self):
+        return '%s : %s' % (self.user_id.username, self.bugurt_id.name)
 
 class Tag(models.Model):
     title = models.CharField(max_length=100)

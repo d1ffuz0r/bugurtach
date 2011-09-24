@@ -8,7 +8,7 @@ class BugurtAdmin(admin.ModelAdmin):
     pass
 
 class LikeAdmin(admin.ModelAdmin):
-    pass
+    list_display  = ('bugurt_id', 'user_id', 'type')
 
 class TagAdmin(admin.ModelAdmin):
     pass

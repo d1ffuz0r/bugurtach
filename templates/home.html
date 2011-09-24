@@ -16,11 +16,7 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <div>
-                        Понравилось: {{ bugurt.likes }}
-                        <div class="like" id="{{ bugurt.id }}"></div>
-                        <div class="dislike" id="{{ bugurt.id }}"></div>
-                    </div>
+                    {% include 'includes/likes.html' %}
                 </div>
             </div>
         {% endfor %}
