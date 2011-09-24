@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
-from ajax.views import like
+from ajax.views import like, add_comment
 from bugurtach.views import homepage, user_settings, registration, add_bugurt, edit_bugurt, view_bugurt, all_bugurts, \
     delete_bugurt, view_user, view_tags
 from django.contrib import admin
@@ -23,12 +23,17 @@ urlpatterns = patterns('',
     url(r'^user/(.*?)/', view_user),
     url(r'^bugurts/', all_bugurts),
     url(r'^tags/(.*?)/', view_tags),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+    url(r'^media/(?P<path>.*)$',
+        'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT}), #FIX: need afternginx
+    url(r'^static/(?P<path>.*)$',
+        'django.views.static.serve',
+        {'document_root': settings.STATIC_ROOT}), #FIX: need after nginx
 )
 
 ajax = patterns('',
-    url('^ajax/like/', like)
+    url('^ajax/like/', like),
+    url('^ajax/add_comment/', add_comment),
 )
 
 urlpatterns += ajax

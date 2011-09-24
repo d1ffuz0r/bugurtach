@@ -32,7 +32,7 @@ class Bugurt(models.Model):
     name = models.CharField(max_length=100)
     text = models.TextField(max_length=10000)
     date = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(CustomUser)
+    author = models.ForeignKey(User)
     likes = models.IntegerField(max_length=10, blank=True, default=0)#models.ManyToManyField('Like', blank=True)
     tags = models.ManyToManyField('Tag', blank=True, through='BugurtTags')
 
@@ -121,3 +121,12 @@ class Proof(models.Model):
 class BugurtTags(models.Model):
     id_bugurt = models.ForeignKey(Bugurt)
     id_tag = models.ForeignKey(Tag)
+
+class Comments(models.Model):
+    author  = models.ForeignKey(User)
+    bugurt = models.ForeignKey(Bugurt)
+    date = models.DateTimeField(auto_now=True)
+    text = models.TextField(max_length=1000)
+    
+    def __unicode__(self):
+        return '%s : %s...' % (self.author, self.text)

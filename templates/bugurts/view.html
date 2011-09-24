@@ -4,10 +4,11 @@
         <p class="meta">{{ bugurt.date|date:'' }} Posted by <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></p>
         <h2 class="title">{{ bugurt.name }}</h2>
         <div class="entry">
-            {{ bugurt.text|safe }}
-            <div>Понравилось: {{ bugurt.likes.count }}</div>
+            {{ bugurt.text|escape }}
+            {% include 'includes/likes.html' %}
         </div>
     </div>
+    {% include 'includes/commentaries.html' %}
 {% endblock %}
 {% block rightbar %}
 <ul>

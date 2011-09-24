@@ -467,7 +467,7 @@ hr { display: none; }
 	position: fixed;
 	bottom: 0;
 	width: 150px;
-	height: 120px;
+	height: 105px;
 	background: url("/static/images/face.png") no-repeat right bottom;
 }
 #login-form{
@@ -487,4 +487,12 @@ hr { display: none; }
     cursor: pointer;
     float: right;
     background: url(/static/images/like.gif) no-repeat -20px 0;
+}
+#messages{
+    position: fixed;
+    bottom: 70px;
+    left: 100px;
+    min-height: 100px;
+    background: #fff;
+    border-radius: 8px;
 }

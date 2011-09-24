@@ -1,0 +1,12 @@
+{% load comment_tags %}
+<h2>Latest commentaries</h2>
+<ul>
+    {% latest_comments 1 %}
+    {% if latest_comments %}
+        {% for comment in latest_comments %}
+            <li><a href="/bugurts/{{ comment.bugurt }}/#comment{{ comment.id }}">{{ comment.author }}</a></li>
+        {% endfor %}
+    {% else %}
+        <li><a>Not commentaries</a></li>
+    {% endif %}
+    </ul>

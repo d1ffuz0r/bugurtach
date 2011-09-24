@@ -1,7 +1,7 @@
 from functools import wraps
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.views.decorators.cache import cache_control
+#from django.views.decorators.cache import cache_control
 
 def render_to(template):
     """
@@ -9,7 +9,7 @@ def render_to(template):
     """
     def renderer(func):
         @wraps(func)
-        @cache_control(must_revalidate=True, max_age=3600)
+        #@cache_control(must_revalidate=True, max_age=3600)
         def wrapper(request, *args, **kw):
             output = func(request, *args, **kw)
             if isinstance(output, (list, tuple)):

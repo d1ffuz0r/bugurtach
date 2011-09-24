@@ -133,6 +133,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    #'django.contrib.sites',
+    #'django.contrib.comments',
     'bugurtach',
 )
 AUTH_PROFILE_MODULE = 'bugurtach.CustomUser'

@@ -6,20 +6,16 @@ from django.http import HttpResponseRedirect
 from bugurtach.forms import EditBugurt
 from bugurtach.models import CustomUser, Tag
 from decorators import render_to
-from django.db.models import Max
 from models import Bugurt
 from forms import AddBugurt
 
 @render_to('home.html')
 def homepage(request):
-    bugurts = Bugurt.objects.order_by('-date')
-    comments = [{'title':'text static comment', 'url': '/bugurts/1#1'}]
-    top = bugurts.all().aggregate(Max('likes'))
+    bugurts = Bugurt.objects.order_by('-id')
+    top_bugurt = Bugurt.objects.order_by('-likes').order_by('-comments')[:1].get()
     return {'title': 'homepage',
             'bugurts': bugurts,
-            'latest_bugurts': bugurts.order_by('-date')[:10],
-            'latest_comments': comments,
-            'top_bugurt': top,
+            'top_bugurt': top_bugurt,
             'tags': Tag.all()}
 
 @login_required(login_url="/login/")
@@ -62,8 +58,15 @@ def add_bugurt(request):
 @render_to('bugurts/edit.html')
 def edit_bugurt(request, name):
     bugurt = Bugurt.get_by_name(name)
-    if request.user.username == bugurt.author.user.username:
-        edit_form = EditBugurt({'name':bugurt.name, 'text':bugurt.text})
+    if request.user.username == bugurt.author.username:
+        if request.POST:
+            edit_form = EditBugurt(request.POST)
+            if edit_form.is_valid():
+                bugurt.name = edit_form.cleaned_data['name']
+                bugurt.text = edit_form.cleaned_data['text']
+                bugurt.save()
+        else:
+            edit_form = EditBugurt({'name':bugurt.name, 'text':bugurt.text})
         return {'edit_form': edit_form}
     else:
         return HttpResponseRedirect(bugurt.get_absolute_url())

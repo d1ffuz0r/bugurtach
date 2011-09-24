@@ -38,4 +38,27 @@ $(document).ready(function($) {
             }
         });
     });
+
+    /* add comment */
+    $("#add_post").click(function(){
+        var text = $('#text').val();
+        $.ajax({
+            type: "POST",
+            url: '/ajax/add_comment/',
+            data: ({
+                'csrfmiddlewaretoken' : $('[name="csrfmiddlewaretoken"]').val(),
+                'bugurt' : $('#bugurt').val(),
+                'text' : text
+            }),
+            success: function(data){
+                if(data.message){
+                    alert(data.message);
+                }
+                if(data.comment){
+                    var c = data.comment;
+                    $('#comments').append('<li>'+c.author+c.text+c.date+'</li>');
+                }
+            }
+        });
+    });
 });

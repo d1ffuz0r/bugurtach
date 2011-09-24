@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    {{ edit_form }}
+    <form action="" method="POST">
+        
+        {% csrf_token %}
+        {{ edit_form.as_p }}
+        <input type="submit" value="Сохранить">
+    </form>
 {% endblock %}
