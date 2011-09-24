@@ -1,6 +1,6 @@
 $(document).ready(function($) {
     $("#face").click(function(){
-        alert('an');
+        alert('Problem, officer?');
     });
 
     /* like */
@@ -14,7 +14,7 @@ $(document).ready(function($) {
                 'bugurt_id': id,
                 'type': 'like'
             }),
-            success:function(data){
+            success: function(data){
                 $('#likes_'+id).html(data.likes);
                 alert(data.message);
             }
@@ -32,7 +32,7 @@ $(document).ready(function($) {
                 'bugurt_id': id,
                 'type': 'dislike'
             }),
-            success:function(data){
+            success: function(data){
                 $('#likes_'+id).html(data.likes);
                 alert(data.message);
             }
@@ -43,9 +43,9 @@ $(document).ready(function($) {
     $("#add_post").click(function(){
         var text = $('#text').val();
         $.ajax({
-            type: "POST",
-            url: '/ajax/add_comment/',
-            data: ({
+            type : "POST",
+            url  : '/ajax/add_comment/',
+            data : ({
                 'csrfmiddlewaretoken' : $('[name="csrfmiddlewaretoken"]').val(),
                 'bugurt' : $('#bugurt').val(),
                 'text' : text

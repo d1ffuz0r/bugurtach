@@ -4,12 +4,12 @@
     {% if bugurts %}
         {% for bugurt in bugurts %}
             <div class="post">
-                <p class="meta">{{ bugurt.date|date:'' }} Posted by <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></p>
+                <p class="meta">{{ bugurt.date|date:'' }} забугуртил <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></p>
                 <h2 class="title"><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a></h2>
                 <div class="entry">
                     {{ bugurt.text|escape }}
-                    <div><a href="{{ bugurt.get_absolute_url }}" class="links">View Full Bugurt</a></div>
-                    {% if bugurt.tags.count %}
+                    <div><a href="{{ bugurt.get_absolute_url }}" class="links">Полностью</a></div>
+                    {% if bugurt.tags %}
                         <div>Теги:
                             {% for tag in bugurt.tags.all %}
                                 <a href="/tags/{{ tag.title }}/">{{ tag.title }}</a>
@@ -21,15 +21,17 @@
             </div>
         {% endfor %}
     {% else %}
-        <h2 class="title"><a>Not bugurts</a></h2>
+        <h2 class="title"><a>Нет бугуртов</a></h2>
     {% endif %}
 {% endblock %}
 {% block rightbar %}
 <ul>
     <li>
-        <h2>Top bugurt</h2>
-        <p>{{ top_bugurt.text|truncatewords:10 }}</p>
-        <p><a href="{{ top_bugurt.get_absolute_url }}">{{ top_bugurt.name }}</a></p>
+        <h2>Популярный бугурт</h2>
+        {% if top_bugurt %}
+            <p>{{ top_bugurt.text|truncatewords:10 }}</p>
+            <p><a href="{{ top_bugurt.get_absolute_url }}">{{ top_bugurt.name }}</a></p>
+        {% endif %}
     </li>
     <li>
         {% include 'includes/latest_bugurts.html' %}
@@ -37,14 +39,14 @@
     <li>
         {% include 'includes/latest_commentaries.html' %}
     <li>
-        <h2>Tags</h2>
+        <h2>Теги</h2>
         <ul>
             {% if tags %}
                 {% for tag in tags %}
                     <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>,
                 {% endfor %}
             {% else %}
-                <li><a>Not tags</a></li>
+                <li><a>Нет тегов</a></li>
             {% endif %}
         </ul>
     </li>

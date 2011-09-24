@@ -2,22 +2,22 @@ from django.contrib import admin
 from bugurtach.models import *
 
 class CustomUserAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('user', )
 
 class BugurtAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'author', 'likes', 'date')
 
 class LikeAdmin(admin.ModelAdmin):
     list_display  = ('bugurt_id', 'user_id', 'type')
 
 class TagAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title',)
 
 class BugurtTagsAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('bugurt', 'tag')
 
 class CommentsAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('author', 'bugurt', 'date')
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Bugurt, BugurtAdmin)

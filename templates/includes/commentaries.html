@@ -2,8 +2,8 @@
 <div id="commentaries">
     <h2>Комментарии:</h2>
     {% comments_bugurt bugurt %}
+    <ul id="comments">
     {% if comments %}
-        <ul id="comments">
             {% for comment in comments %}
                 <li id="comment{{ comment.id }}">
                     {{ comment.author }}
@@ -11,10 +11,7 @@
                     {{ comment.date|date:"d.m.y, H:m" }}
                 </li>
             {% endfor %}
-        </ul>
-    {% else %}
-        Комментариев нет
     {% endif %}
-
+    </ul>
     {% include 'comments/form.html' %}
 </div>

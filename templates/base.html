@@ -19,13 +19,13 @@
 			<div id="menu">
 				<ul>
                     {% if user.is_authenticated %}
-                        <li class="first"><a href="/bugurts/add/">Add bugurt</a></li>
-					    <li class="first"><a href="/user/{{ user }}/">{{ user }}</a></li>
-                        <li><a href="/settings">settings</a></li>
-                        <li><a href="/logout" class="last">logout</a></li>
+                        <li><a href="/bugurts/add/">забугуртить</a></li>
+					    <li><a href="/user/{{ user }}/">{{ user }}</a></li>
+                        <li><a href="/settings">настройки</a></li>
+                        <li><a class="last" href="/logout" >выход</a></li>
                     {% else %}
-                        <li><a href="/login">login</a></li>
-                        <li><a href="/registration">registration</a></li>
+                        <li><a href="/login">войти</a></li>
+                        <li><a class="last" href="/registration">регистрация</a></li>
                     {% endif %}
 				</ul>
 			</div>

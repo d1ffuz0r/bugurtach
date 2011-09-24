@@ -1,12 +1,12 @@
 {% load bugurt_tags %}
-<h2>Latest bugurts</h2>
+<h2>Последние бугурты</h2>
 <ul>
     {% latest_bugurt %}
     {% if latest_bugurts %}
         {% for bugurt in latest_bugurts %}
-            <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> from <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></li>
+            <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></li>
         {% endfor %}
     {% else %}
-        <li><a>Not bugurts</a></li>
+        <li><a>Нет бугуртов</a></li>
     {% endif %}
 </ul>

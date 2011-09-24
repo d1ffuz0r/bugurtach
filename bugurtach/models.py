@@ -8,6 +8,7 @@ class CustomUser(models.Model):
     user = models.OneToOneField(User, unique=True)
     bugurts = models.ManyToManyField('Bugurt', blank=True)
     likes = models.ManyToManyField('Like', blank=True)
+    info = models.TextField(max_length=1000, blank=True)
     
     class Meta:
         verbose_name = u'Аккаунт'
@@ -27,14 +28,28 @@ def create_profile(**kwargs):
 
 post_save.connect(create_profile, sender=User, dispatch_uid="users-profilecreation-signal")
 
+class Tag(models.Model):
+    title = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = u'Тег'
+        verbose_name_plural = u'Теги'
+
+    @classmethod
+    def all(cls):
+        return cls.objects.all()
+
+    def __unicode__(self):
+        return self.title
+
 class Bugurt(models.Model):
-    id = models.IntegerField(auto_created=True, unique=True, primary_key=True)
     name = models.CharField(max_length=100)
     text = models.TextField(max_length=10000)
     date = models.DateTimeField(auto_now=True)
+    likes = models.IntegerField(max_length=10, blank=True, default=0)
     author = models.ForeignKey(User)
-    likes = models.IntegerField(max_length=10, blank=True, default=0)#models.ManyToManyField('Like', blank=True)
-    tags = models.ManyToManyField('Tag', blank=True, through='BugurtTags')
+    tags = models.ManyToManyField(Tag, through='BugurtTags', blank=True)
+    comments = models.ManyToManyField('Comments', blank=True, related_name='bugurtcomments')
 
     class Meta:
         verbose_name = u'Бугурт'
@@ -51,7 +66,7 @@ class Bugurt(models.Model):
 
     def get_absolute_url(self):
         return u'/bugurts/%s/' % self.name
-    
+
     def __unicode__(self):
         return self.name
 
@@ -83,6 +98,17 @@ class Bugurt(models.Model):
                 bugu.likes -= 1
                 bugu.save()
         return bugu.likes
+
+class BugurtTags(models.Model):
+    bugurt = models.ForeignKey(Bugurt)
+    tag = models.ForeignKey(Tag)
+
+    class Meta:
+        verbose_name = u'Тег бугурту'
+        verbose_name_plural = u'Теги бугуртов'
+
+    def __unicode__(self):
+        return '%s : %s' %(self.bugurt, self.tag)
     
 class Like(models.Model):
     user_id = models.ForeignKey(User)
@@ -96,37 +122,18 @@ class Like(models.Model):
     def __unicode__(self):
         return '%s : %s' % (self.user_id.username, self.bugurt_id.name)
 
-class Tag(models.Model):
-    title = models.CharField(max_length=100)
-    bugurts = models.ManyToManyField(Bugurt, through='BugurtTags')
-
-    class Meta:
-        verbose_name = u'Тег'
-        verbose_name_plural = u'Теги'
-
-    @classmethod
-    def all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def create(cls, name):
-        return cls.objects.create(name).save()
-
-    def __unicode__(self):
-        return self.title
-
 class Proof(models.Model):
     pass
 
-class BugurtTags(models.Model):
-    id_bugurt = models.ForeignKey(Bugurt)
-    id_tag = models.ForeignKey(Tag)
-
 class Comments(models.Model):
     author  = models.ForeignKey(User)
-    bugurt = models.ForeignKey(Bugurt)
+    bugurt = models.ForeignKey(Bugurt, related_name='bugurtcomments')
     date = models.DateTimeField(auto_now=True)
     text = models.TextField(max_length=1000)
-    
+
+    class Meta:
+        verbose_name = u'Комментарий'
+        verbose_name_plural = u'Комментарии'
+
     def __unicode__(self):
         return '%s : %s...' % (self.author, self.text)

@@ -4,6 +4,7 @@
         <p>{% csrf_token %}</p>
         {{ add_form.as_p }}
         <p><input type="hidden" value="{{ user.id }}" name="author"></p>
+        <p><label for="tags">Теги:</label><input type="text" id="tags" name="tags"></p>
         <p><input type="submit" value="Add"></p>
     </form>
 {% endblock %}
