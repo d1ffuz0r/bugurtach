@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
-from bugurtach.forms import EditBugurt
+from bugurtach.forms import EditBugurt, AddTag
 from bugurtach.models import Tag, BugurtTags
 from decorators import render_to
 from models import Bugurt
@@ -42,30 +42,35 @@ def all_bugurts(request):
     bugurts = Bugurt.objects.order_by('-date')
     return {'bugurts': bugurts}
 
+
+def _create_bugurt(form, request):
+    data = form.data
+    tag_names = data['tags'].replace(' ,', ',').replace(', ', ',').split(',')
+    bugurt = Bugurt.objects.create(name=data['name'],
+        author=request.user,
+        text=data['text'])
+    tt = []
+    for name in tag_names:
+        tag = Tag.objects.filter(title=name)
+        if tag:
+            t = Tag.objects.get(title=name)
+            BugurtTags(bugurt=bugurt, tag=t).save()
+            tt.append(t)
+        else:
+            t = Tag.objects.create(title=name)
+            BugurtTags(bugurt=bugurt, tag=t).save()
+            tt.append(t)
+    bugurt.tags_set = tt
+    bugurt.save()
+
+
 @login_required(login_url="/login/")
 @render_to('bugurts/add.html')
 def add_bugurt(request):
     if request.method == 'POST':
         form = AddBugurt(request.POST, {'author': request.user})
         if form.is_valid():
-            data = form.data
-            tag_names = data['tags'].replace(' ,',',').replace(', ',',').split(',')
-            bugurt = Bugurt.objects.create(name=data['name'],
-                                           author=request.user,
-                                           text=data['text'])
-            tt = []
-            for name in tag_names:
-                tag = Tag.objects.filter(title=name)
-                if tag:
-                    t = Tag.objects.get(title=name)
-                    BugurtTags(bugurt=bugurt, tag=t).save()
-                    tt.append(t)
-                else:
-                    t = Tag.objects.create(title=name)
-                    BugurtTags(bugurt=bugurt, tag=t).save()
-                    tt.append(t)
-            bugurt.tags_set = tt
-            bugurt.save()
+            _create_bugurt(form, request)
             return HttpResponseRedirect('/user/%s/' % request.user)
     else:
         form = AddBugurt
@@ -84,7 +89,7 @@ def edit_bugurt(request, name):
                 bugurt.save()
         else:
             edit_form = EditBugurt({'name': bugurt.name, 'text': bugurt.text})
-        return {'edit_form': edit_form}
+        return {'edit_form': edit_form, 'bugurt': bugurt.id, 'tags': bugurt.tags.all(), 'form_add': AddTag()}
     else:
         return HttpResponseRedirect(bugurt.get_absolute_url())
 

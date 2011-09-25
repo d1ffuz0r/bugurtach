@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="post">
-        <p class="meta">{{ bugurt.date|date:'' }} Posted by <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></p>
+        <p class="meta">{{ bugurt.date|date:'' }}</p>
         <h2 class="title">{{ bugurt.name }}</h2>
         <div class="entry">
             {{ bugurt.text|escape }}
@@ -16,20 +16,20 @@
     <li>
         <h2>Options</h2>
         <ul>
-            <li><a href="{{ bugurt.absolute_url }}edit/">Edit</a></li>
-            <li><a href="{{ bugurt.absolute_url }}delete/">Delete</a></li>
+            <li><a href="{{ bugurt.absolute_url }}edit/">Редактировать</a></li>
+            <li><a href="{{ bugurt.absolute_url }}delete/">Удалить</a></li>
         </ul>
     </li>
     {% endifequal %}
     <li>
-        <h2>Tags</h2>
+        <h2>Теги</h2>
         <ul>
             {% if bugurt.tags.count %}
                 {% for tag in bugurt.tags.all %}
                     <li><a href="/tags/{{ tag.title }}/">{{ tag.title }}</a></li>
                 {% endfor %}
             {% else %}
-                <li><a>Not tags</a></li>
+                <li><a>Нет тегов</a></li>
             {% endif %}
         </ul>
     </li>

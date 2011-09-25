@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from bugurtach.models import Bugurt
 from django import forms
 
@@ -19,3 +20,6 @@ class EditBugurt(forms.ModelForm):
             'name': forms.TextInput(),
             'text': forms.Textarea(),
         }
+
+class AddTag(forms.Form):
+    title = forms.CharField(label="", widget=forms.TextInput(attrs={'title': 'enter one name for tag'}))

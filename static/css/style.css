@@ -496,3 +496,9 @@ hr { display: none; }
     background: #fff;
     border-radius: 8px;
 }
+.delete_tag, .add_tag{
+    cursor: pointer;
+}
+.delete_tag:hover, .add_tag:hover{
+    color: red;
+}

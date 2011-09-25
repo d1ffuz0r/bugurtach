@@ -1,9 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
+    <label for="bugurt"></label><input id="bugurt" value="{{ bugurt }}" style="display: none;"/>
     <form action="" method="POST">
-        
         {% csrf_token %}
         {{ edit_form.as_p }}
+        {% if tags %}
+            Теги:
+            <ul id="tags">
+                {% for tag in tags %}
+                    <li id="tag_{{ tag.id }}"><a>{{ tag.title }}</a>: <span id="{{ tag.id }}" class="delete_tag">удалить</span></li>
+                {% endfor %}
+            </ul>
+            <ul>
+                <li>{{ form_add }} <span class="add_tag">Добавить тег</span></li>
+            </ul>
+        {% endif %}
         <input type="submit" value="Сохранить">
     </form>
 {% endblock %}
