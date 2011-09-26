@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from bugurtach.forms import EditBugurt, AddTag
-from bugurtach.models import Tag, BugurtTags
+from bugurtach.models import Tag, BugurtTags, Proof, BugurtProofs
 from decorators import render_to
 from models import Bugurt
 from forms import AddBugurt
@@ -46,6 +46,8 @@ def all_bugurts(request):
 def _create_bugurt(form, request):
     data = form.data
     tag_names = data['tags'].replace(' ,', ',').replace(', ', ',').split(',')
+    bugurt_links = data['proofs'].replace(' ,', ',').replace(', ', ',').split(',')
+
     bugurt = Bugurt.objects.create(name=data['name'],
         author=request.user,
         text=data['text'])
@@ -60,7 +62,19 @@ def _create_bugurt(form, request):
             t = Tag.objects.create(title=name)
             BugurtTags(bugurt=bugurt, tag=t).save()
             tt.append(t)
+    pp = []
+    for link in bugurt_links:
+            proof = Proof.objects.filter(link=link)
+            if proof:
+                p = Proof.objects.get(link=link)
+                BugurtProofs(bugurt=bugurt, proof=p).save()
+                pp.append(p)
+            else:
+                p = Proof.objects.create(link=link)
+                BugurtProofs(bugurt=bugurt, proof=p).save()
+                pp.append(p)
     bugurt.tags_set = tt
+    bugurt.proofs_set = pp
     bugurt.save()
 
 

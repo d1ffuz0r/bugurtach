@@ -1,6 +1,6 @@
 $(document).ready(function($) {
     $("#face").click(function(){
-        alert('Problem, officer?');
+        alert('Бугуртца?');
     });
 
     /* like */

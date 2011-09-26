@@ -33,5 +33,17 @@
             {% endif %}
         </ul>
     </li>
+    <li>
+        <h2>Пруфы</h2>
+        <ul>
+            {% if bugurt.proofs.count %}
+                {% for proof in bugurt.proofs.all %}
+                    <li><a href="/tags/{{ proof.link }}/">{{ proof.link }}</a></li>
+                {% endfor %}
+            {% else %}
+                <li><a>Нет тегов</a></li>
+            {% endif %}
+        </ul>
+    </li>
 </ul>
 {% endblock %}

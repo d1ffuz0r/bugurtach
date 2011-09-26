@@ -3,11 +3,11 @@
     {% if bugurts %}
         {% for bugurt in bugurts %}
             <div class="post">
-                <p class="meta">{{ bugurt.date|date:'' }} Posted by <a href="#">{{ bugurt.author }}</a></p>
+                <p class="meta">{{ bugurt.date|date:'' }} забугуртил <a href="#">{{ bugurt.author }}</a></p>
                 <h2 class="title"><a href="/bugurts/{{ bugurt.name }}/">{{ bugurt.name }}</a></h2>
                 <div class="entry">
                     {{ bugurt.text|escape }}
-                    <div><a href="/bugurts/{{ bugurt.name }}/" class="links">View Full Bugurt</a></div>
+                    <div><a href="/bugurts/{{ bugurt.name }}/" class="links">Полностью</a></div>
                     {% if bugurt.tags.count %}
                         <div>Теги:
                             {% for tag in bugurt.tags.all %}

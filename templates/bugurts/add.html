@@ -4,7 +4,8 @@
         <p>{% csrf_token %}</p>
         {{ add_form.as_p }}
         <p><input type="hidden" value="{{ user.id }}" name="author"></p>
-        <p><label for="tags">Теги:</label><input type="text" id="tags" name="tags"></p>
+        <p><label for="tags">Теги:</label><input title="разделять через запятую" type="text" id="tags" name="tags"></p>
+        <p><label for="proofs">Пруфы:</label><textarea title="разделять через запятую" id="proofs" name="proofs"></textarea></p>
         <p><input type="submit" value="Add"></p>
     </form>
 {% endblock %}

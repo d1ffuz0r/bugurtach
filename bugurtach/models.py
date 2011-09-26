@@ -9,7 +9,7 @@ class CustomUser(models.Model):
     bugurts = models.ManyToManyField('Bugurt', blank=True)
     likes = models.ManyToManyField('Like', blank=True)
     info = models.TextField(max_length=1000, blank=True)
-    
+
     class Meta:
         verbose_name = u'Аккаунт'
         verbose_name_plural = u'Аккаунты'
@@ -42,6 +42,16 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.title
 
+class Proof(models.Model):
+    link = models.CharField(max_length=500)
+
+    class Meta:
+        verbose_name = u'Пруф'
+        verbose_name_plural = u'Пруфы'
+
+    def __unicode__(self):
+        return self.link
+
 class Bugurt(models.Model):
     name = models.CharField(max_length=100)
     text = models.TextField(max_length=10000)
@@ -49,6 +59,7 @@ class Bugurt(models.Model):
     likes = models.IntegerField(max_length=10, blank=True, default=0)
     author = models.ForeignKey(User)
     tags = models.ManyToManyField(Tag, through='BugurtTags', blank=True)
+    proofs = models.ManyToManyField(Proof, through='BugurtProofs')
     comments = models.ManyToManyField('Comments', blank=True, related_name='bugurtcomments')
 
     class Meta:
@@ -104,12 +115,23 @@ class BugurtTags(models.Model):
     tag = models.ForeignKey(Tag)
 
     class Meta:
-        verbose_name = u'Тег бугурту'
+        verbose_name = u'Тег бугурта'
         verbose_name_plural = u'Теги бугуртов'
 
     def __unicode__(self):
         return '%s : %s' %(self.bugurt, self.tag)
-    
+
+class BugurtProofs(models.Model):
+    bugurt = models.ForeignKey(Bugurt)
+    proof = models.ForeignKey(Proof)
+
+    class Meta:
+        verbose_name = u'Пруф бугурта'
+        verbose_name_plural = u'Пруфы бугуртов'
+
+    def __unicode__(self):
+        return '%s : %s' %(self.bugurt, self.proof)
+
 class Like(models.Model):
     user_id = models.ForeignKey(User)
     bugurt_id = models.ForeignKey(Bugurt)
@@ -121,9 +143,6 @@ class Like(models.Model):
 
     def __unicode__(self):
         return '%s : %s' % (self.user_id.username, self.bugurt_id.name)
-
-class Proof(models.Model):
-    pass
 
 class Comments(models.Model):
     author  = models.ForeignKey(User)
