@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
-from bugurtach.forms import EditBugurt, AddTag
+from bugurtach.forms import EditBugurt, AddTag, AddProof
 from bugurtach.models import Tag, BugurtTags, Proof, BugurtProofs
 from decorators import render_to
 from models import Bugurt
@@ -103,7 +103,7 @@ def edit_bugurt(request, name):
                 bugurt.save()
         else:
             edit_form = EditBugurt({'name': bugurt.name, 'text': bugurt.text})
-        return {'edit_form': edit_form, 'bugurt': bugurt.id, 'tags': bugurt.tags.all(), 'form_add': AddTag()}
+        return {'edit_form': edit_form, 'bugurt': bugurt, 'tag_add': AddTag(), 'proof_add': AddProof()}
     else:
         return HttpResponseRedirect(bugurt.get_absolute_url())
 

@@ -496,9 +496,9 @@ hr { display: none; }
     background: #fff;
     border-radius: 8px;
 }
-.delete_tag, .add_tag{
+.add_tag, .delete_tag, .add_proof, .delete_proof{
     cursor: pointer;
 }
-.delete_tag:hover, .add_tag:hover{
+.add_tag:hover, .delete_tag:hover, .add_proof:hover, .delete_proof:hover{
     color: red;
 }

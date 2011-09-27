@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
-from ajax.views import like, add_comment, delete_tag, add_tag
+from ajax.views import like, add_comment, add_tag, delete_tag, add_proof, delete_proof
 from bugurtach.views import homepage, user_settings, registration, add_bugurt, edit_bugurt, view_bugurt, all_bugurts, \
     delete_bugurt, view_user, view_tags
 from django.contrib import admin
@@ -36,6 +36,8 @@ ajax = patterns('',
     url('^ajax/add_comment/', add_comment),
     url('^ajax/add_tag/', add_tag),
     url('^ajax/delete_tag/', delete_tag),
+    url('^ajax/add_proof/', add_proof),
+    url('^ajax/delete_proof/', delete_proof),
 )
 
 urlpatterns += ajax

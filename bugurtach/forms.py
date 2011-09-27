@@ -23,3 +23,6 @@ class EditBugurt(forms.ModelForm):
 
 class AddTag(forms.Form):
     title = forms.CharField(label="", widget=forms.TextInput(attrs={'title': 'enter one name for tag'}))
+
+class AddProof(forms.Form):
+    link = forms.CharField(label="", widget=forms.TextInput(attrs={'title': 'enter one link for proof'}))

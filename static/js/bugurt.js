@@ -62,24 +62,6 @@ $(document).ready(function($) {
         });
     });
 
-    /* delete tag */
-    $(".delete_tag").live('click', function(){
-        var tag = parseInt(this.id);
-        $.ajax({
-            type: "POST",
-            url: "/ajax/delete_tag/",
-            data: ({
-                'csrfmiddlewaretoken' : $('[name="csrfmiddlewaretoken"]').val(),
-                'bugurt': $('#bugurt').val(),
-                'tag': tag
-            }),
-            success: function(){
-                console.log(tag);
-                $("#tag_"+tag).remove();
-            }
-        });
-    });
-
     /* add tag */
     $(".add_tag").live('click', function(){
         $.ajax({
@@ -102,4 +84,63 @@ $(document).ready(function($) {
             }
         });
     });
+    
+    /* delete tag */
+    $(".delete_tag").live('click', function(){
+        var tag = parseInt(this.id);
+        $.ajax({
+            type: "POST",
+            url: "/ajax/delete_tag/",
+            data: ({
+                'csrfmiddlewaretoken' : $('[name="csrfmiddlewaretoken"]').val(),
+                'bugurt': $('#bugurt').val(),
+                'tag': tag
+            }),
+            success: function(){
+                console.log(tag);
+                $("#tag_"+tag).remove();
+            }
+        });
+    });
+
+    /* add proof */
+        $(".add_proof").live('click', function(){
+            $.ajax({
+                type: "POST",
+                url: "/ajax/add_proof/",
+                data: ({
+                    'csrfmiddlewaretoken' : $('[name="csrfmiddlewaretoken"]').val(),
+                    'bugurt': $('#bugurt').val(),
+                    'proof': $('#id_link').val()
+                }),
+                success: function(data){
+                    if(data.message){
+                        alert(data.message)
+                    }
+                    else{
+                        $('#id_link').val('');
+                        $("#proofs").append('<li id="proof_'+data.id+'"><a>'+data.proof+'</a>:\
+                        <span id="'+data.id+'" class="delete_tag">удалить</span></li>');
+                    }
+                }
+            });
+        });
+
+        /* delete proof */
+        $(".delete_proof").live('click', function(){
+            var proof = parseInt(this.id);
+            $.ajax({
+                type: "POST",
+                url: "/ajax/delete_proof/",
+                data: ({
+                    'csrfmiddlewaretoken' : $('[name="csrfmiddlewaretoken"]').val(),
+                    'bugurt': $('#bugurt').val(),
+                    'tag': proof
+                }),
+                success: function(){
+                    console.log(proof);
+                    $("#proof_"+proof).remove();
+                }
+            });
+        });
 });
