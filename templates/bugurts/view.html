@@ -6,6 +6,15 @@
         <div class="entry">
             {{ bugurt.text|escape }}
             {% include 'includes/likes.html' %}
+            <ul>
+                {% if bugurt.proofs.count %}
+                    {% for proof in bugurt.proofs.all %}
+                        <li><a href="{{ proof.link }}" target="_blank">{{ proof.link }}</a></li>
+                    {% endfor %}
+                {% else %}
+                    <li><a>Нет тегов</a></li>
+                {% endif %}
+            </ul>
         </div>
     </div>
     {% include 'includes/commentaries.html' %}
@@ -35,7 +44,7 @@
     </li>
     <li>
     <h2>Теги</h2>
-    <ul>
+        <ul>
         {% if bugurt.tags.count %}
                 {% for tag in bugurt.tags.all %}
                     <li><a href="/tags/{{ tag.title }}/">{{ tag.title }}</a></li>

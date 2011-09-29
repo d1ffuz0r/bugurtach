@@ -21,8 +21,15 @@ def homepage(request):
 @login_required(login_url="/login/")
 @render_to('settings.html')
 def user_settings(request):
-    form = PasswordChangeForm
-    return {'form': form}
+    msg = ''
+    if request.POST:
+        form_password = PasswordChangeForm(request.user, request.POST)
+        if form_password.is_valid():
+            form_password.save()
+            msg = 'Saved'
+    else:
+        form_password = PasswordChangeForm(request.user)
+    return {'form_password': form_password, 'msg': msg}
 
 @render_to('registration/registration.html')
 def registration(request):

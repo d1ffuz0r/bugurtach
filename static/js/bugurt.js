@@ -97,7 +97,6 @@ $(document).ready(function($) {
                 'tag': tag
             }),
             success: function(){
-                console.log(tag);
                 $("#tag_"+tag).remove();
             }
         });
@@ -138,7 +137,6 @@ $(document).ready(function($) {
                     'tag': proof
                 }),
                 success: function(){
-                    console.log(proof);
                     $("#proof_"+proof).remove();
                 }
             });
