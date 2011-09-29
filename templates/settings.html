@@ -1,4 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-    {{ form.as_p }}
+    <h2>Сменить пароль</h2>
+    {% if msg %}
+        Сохранено
+    {% endif %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form_password.as_p }}
+        <input type="submit" value="Сменить">
+    </form>
 {% endblock %}
