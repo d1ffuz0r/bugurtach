@@ -39,6 +39,9 @@ class Tag(models.Model):
     def all(cls):
         return cls.objects.all()
 
+    def get_absolute_url(self):
+        return u'/tags/%s/' % self.title
+
     def __unicode__(self):
         return self.title
 
@@ -53,8 +56,8 @@ class Proof(models.Model):
         return self.link
 
 class Bugurt(models.Model):
-    name = models.CharField(max_length=100)
-    text = models.TextField(max_length=10000)
+    name = models.CharField(max_length=100, verbose_name=u'Заголовок')
+    text = models.TextField(max_length=10000, verbose_name=u'Текст')
     date = models.DateTimeField(auto_now=True)
     likes = models.IntegerField(max_length=10, blank=True, default=0)
     author = models.ForeignKey(User)

@@ -1,46 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
-    {% csrf_token %}
-    {% if bugurts %}
-        {% for bugurt in bugurts %}
-            <div class="post">
-                <p class="meta">{{ bugurt.date|date:'' }} забугуртил <a href="{{ bugurt.author.get_absolute_url }}">{{ bugurt.author }}</a></p>
-                <h2 class="title"><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a></h2>
-                <div class="entry">
-                    {{ bugurt.text|escape }}
-                    <div><a href="{{ bugurt.get_absolute_url }}" class="links">Полностью</a></div>
-                    {% if bugurt.tags %}
-                        <div>Теги:
-                            {% for tag in bugurt.tags.all %}
-                                <a href="/tags/{{ tag.title }}/">{{ tag.title }}</a>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    {% include 'includes/likes.html' %}
-                </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <h2 class="title"><a>Нет бугуртов</a></h2>
-    {% endif %}
-{% endblock %}
-{% block rightbar %}
-<ul>
-    <li>
-        <h2>Популярный бугурт</h2>
-        {% if top_bugurt %}
-            <p>{{ top_bugurt.text|truncatewords:10 }}</p>
-            <p><a href="{{ top_bugurt.get_absolute_url }}">{{ top_bugurt.name }}</a></p>
-        {% endif %}
-    </li>
-    <li>
-        {% include 'includes/latest_bugurts.html' %}
-    </li>
-    <li>
-        {% include 'includes/latest_commentaries.html' %}
-    <li>
-        <h2>Теги</h2>
-        <ul>
+    <div id="home-logo" class="box1">
+        <div><a href="/"><img src="{{ STATIC_URL }}images/front-logo.png" alt=""></a></div>
+    </div>
+    <div class="box1 home_l">
+        <div class="box-title"><h3><a href="/bugurts">Новые бугурты</a></h3></div>
+        <ul id="newbugg" style="margin-left: 20px;">
+            {% for bugurt in latest_bugurts %}
+                <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a
+                        href="/bugurts/{{ bugurt.author }}">{{ bugurt.author }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="box1 home_r">
+        <div class="box-title"><h3><a href="">Лютый WIN</a></h3></div>
+        <ul style="margin-left: 20px;">
+            {% for bugurt in top_bugurts %}
+                <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a
+                        href="/bugurts/{{ bugurt.author }}">{{ bugurt.author }}</a> {{ bugurt.likes }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="box1 home_l">
+        <div class="box-title"><h3><a>Комментарии</a></h3></div>
+        <ul style="margin-left: 20px; overflow: hidden;">
+            {% for comment in latest_comments %}
+                <li><a href="{{ comment.author.get_absolute_url }}">{{ comment.author }}</a>: <a
+                        href="{{ comment.bugurt.get_absolute_url }}#comment{{ comment.id }}">{{ comment.text|truncatewords:40 }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="box1 home_r">
+        <div class="box-title"><h3><a>Теги</a></h3></div>
+        <ul style="margin-left: 20px; overflow: hidden;">
             {% if tags %}
                 {% for tag in tags %}
                     <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>,
@@ -49,6 +42,5 @@
                 <li><a>Нет тегов</a></li>
             {% endif %}
         </ul>
-    </li>
-</ul>
+    </div>
 {% endblock %}

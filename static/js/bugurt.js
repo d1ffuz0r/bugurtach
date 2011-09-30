@@ -56,7 +56,7 @@ $(document).ready(function($) {
                 }
                 else{
                     var c = data.comment;
-                    $('#comments').append('<li>'+c.author+c.text+c.date+'</li>');
+                    $('#comments').append('<li class="reply"><div>'+c.author+'</div><div>'+c.text+'</div><div>'+c.date+'</div></li>');
                 }
             }
         });

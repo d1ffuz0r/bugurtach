@@ -1,9 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="/login/" method="POST" id="login-form">
-        {% csrf_token %}
-        <p><input type="hidden" value="/" name="next_url"></p>
-        {{ form.as_p }}
-        <input type="submit" value="Login">
-    </form>
+    <div class="box1" id="login">
+        <div class="box-title">
+            <h3>Войти бесплатно без смс</h3>
+        </div>
+        <div class="login-form">
+            <form action="/login/" method="POST" id="login-form">
+                {% if form.errors %}
+                    <p class="error">Хуйню написал. Введи ещё раз логин и пароль.</p>
+                {% endif %}
+                {% csrf_token %}
+                <input type="hidden" value="/" name="next_url">
+                <p><label for="id_username">Логин:</label>{{ form.username }}</p>
+                <p><label for="id_password">Пассворд:</label>{{ form.password }}</p>
+                <p><input type="submit" value="Войти"></p>
+            </form>
+        </div>
+    </div>
 {% endblock %}

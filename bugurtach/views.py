@@ -4,19 +4,21 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from bugurtach.forms import EditBugurt, AddTag, AddProof
-from bugurtach.models import Tag, BugurtTags, Proof, BugurtProofs
+from bugurtach.models import Tag, BugurtTags, Proof, BugurtProofs, Comments
 from decorators import render_to
 from models import Bugurt
 from forms import AddBugurt
 
 @render_to('home.html')
 def homepage(request):
-    bugurts = Bugurt.objects.order_by('-id')
-    top_bugurt = Bugurt.objects.order_by('-likes').order_by('-comments')[:1]
-    return {'title': 'homepage',
-            'bugurts': bugurts,
-            'top_bugurt': top_bugurt,
-            'tags': Tag.all()}
+    bugurts = Bugurt.objects.order_by('-id')[:10]
+    top_bugurts = Bugurt.objects.order_by('-likes').order_by('-comments')[:10]
+    tags = Tag.objects.all()
+    latest_comments = Comments.objects.order_by('-id')[:10]
+    return {'latest_bugurts': bugurts,
+            'top_bugurts': top_bugurts,
+            'tags': tags,
+            'latest_comments': latest_comments}
 
 @login_required(login_url="/login/")
 @render_to('settings.html')

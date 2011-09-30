@@ -25,10 +25,10 @@ urlpatterns = patterns('',
     url(r'^tags/(.*?)/', view_tags),
     url(r'^media/(?P<path>.*)$',
         'django.views.static.serve',
-        {'document_root': settings.MEDIA_ROOT}), #FIX: need afternginx
+            {'document_root': settings.MEDIA_ROOT}), #FIX: need after nginx
     url(r'^static/(?P<path>.*)$',
         'django.views.static.serve',
-        {'document_root': settings.STATIC_ROOT}), #FIX: need after nginx
+            {'document_root': settings.STATIC_ROOT}), #FIX: need after nginx
 )
 
 ajax = patterns('',
