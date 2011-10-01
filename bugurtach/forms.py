@@ -17,12 +17,12 @@ class EditBugurt(forms.ModelForm):
         model = Bugurt
         fields = ('name', 'text')
         widgets = {
-            'name': forms.TextInput(),
-            'text': forms.Textarea(),
+            'name': forms.TextInput(attrs={'style':'margin-bottom:10px;'}),
+            'text': forms.Textarea(attrs={'style':'margin-left:42px;'}),
         }
 
 class AddTag(forms.Form):
-    title = forms.CharField(label="", widget=forms.TextInput(attrs={'title': 'enter one name for tag'}))
+    title = forms.CharField(label="", widget=forms.TextInput(attrs={'title': 'Одно название тега'}))
 
 class AddProof(forms.Form):
-    link = forms.CharField(label="", widget=forms.TextInput(attrs={'title': 'enter one link for proof'}))
+    link = forms.CharField(label="", widget=forms.TextInput(attrs={'title': 'Один линк пруфа'}))

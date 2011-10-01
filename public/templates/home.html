@@ -17,7 +17,7 @@
         </ul>
     </div>
     <div class="box1 home_r">
-        <div class="box-title"><h3><a href="">Лютый WIN</a></h3></div>
+        <div class="box-title"><h3><a>Лютый WIN</a></h3></div>
         <ul style="margin-left: 20px;">
             {% if top_bugurts %}
                 {% for bugurt in top_bugurts %}
@@ -44,11 +44,11 @@
         </ul>
     </div>
     <div class="box1 home_r">
-        <div class="box-title"><h3><a>Теги</a></h3></div>
+        <div class="box-title"><h3><a href="/tags/">Теги</a></h3></div>
         <ul style="margin-left: 20px; overflow: hidden;">
             {% if tags %}
                 {% for tag in tags %}
-                    <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>,
+                    <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
                 {% endfor %}
             {% else %}
                 <li><a>Нет тегов</a></li>

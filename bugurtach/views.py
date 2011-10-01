@@ -31,7 +31,8 @@ def user_settings(request):
             msg = 'Saved'
     else:
         form_password = PasswordChangeForm(request.user)
-    return {'form_password': form_password, 'msg': msg}
+    return {'form_password': form_password,
+            'msg': msg}
 
 @render_to('registration/registration.html')
 def registration(request):
@@ -39,7 +40,10 @@ def registration(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            user = authenticate(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1']
+            )
             login(request, user)
             return HttpResponseRedirect('/')
     else:
@@ -50,7 +54,6 @@ def registration(request):
 def all_bugurts(request):
     bugurts = Bugurt.objects.order_by('-date')
     return {'bugurts': bugurts}
-
 
 def _create_bugurt(form, request):
     data = form.data
@@ -86,12 +89,11 @@ def _create_bugurt(form, request):
     bugurt.proofs_set = pp
     bugurt.save()
 
-
 @login_required(login_url="/login/")
 @render_to('bugurts/add.html')
 def add_bugurt(request):
     if request.method == 'POST':
-        form = AddBugurt(request.POST, {'author': request.user})
+        form = AddBugurt(request.POST, initial={'author': request.user})
         if form.is_valid():
             _create_bugurt(form, request)
             return HttpResponseRedirect('/user/%s/' % request.user)
@@ -110,9 +112,13 @@ def edit_bugurt(request, name):
                 bugurt.name = edit_form.cleaned_data['name']
                 bugurt.text = edit_form.cleaned_data['text']
                 bugurt.save()
+                return HttpResponseRedirect(bugurt.get_absolute_url())
         else:
-            edit_form = EditBugurt({'name': bugurt.name, 'text': bugurt.text})
-        return {'edit_form': edit_form, 'bugurt': bugurt, 'tag_add': AddTag(), 'proof_add': AddProof()}
+            edit_form = EditBugurt(initial={'name': bugurt.name, 'text': bugurt.text})
+        return {'edit_form': edit_form,
+                'bugurt': bugurt,
+                'tag_add': AddTag(),
+                'proof_add': AddProof()}
     else:
         return HttpResponseRedirect(bugurt.get_absolute_url())
 
@@ -136,3 +142,7 @@ def view_user(request, username):
 @render_to('bugurts/bugurts.html')
 def view_tags(request, tag):
     return {'bugurts': Bugurt.get_by_tag(tag)}
+
+@render_to('tags.html')
+def view_all_tags(request):
+    return {'tags': Tag.all()}

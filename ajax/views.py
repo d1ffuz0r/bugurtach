@@ -4,6 +4,10 @@ from django.utils import simplejson
 from bugurtach.models import Bugurt, Comments, BugurtTags, Tag, Proof, BugurtProofs
 from django.utils.html import escape
 
+def reply(request):
+    random_reply = Comments.objects.order_by('?')[0].text
+    return HttpResponse(random_reply)
+
 def like(request):
     result = {}
     user = request.user
@@ -28,7 +32,7 @@ def like(request):
                 else:
                     result.update({"message": "Вы уже голосовали за этот бугурт"})
         else:
-            result.update({"message":"WOK."})
+            result.update({"message":"WOK!"})
     else:
         result.update({"message":"Login please"})
     return HttpResponse(simplejson.dumps(result), "json")
@@ -52,14 +56,13 @@ def add_comment(request):
             else:
                 result.update({"message":"Enter message please"})
         else:
-            result.update({"message":"WOK."})
+            result.update({"message":"WOK!"})
     else:
         result.update({"message":"Login please"})
     return HttpResponse(simplejson.dumps(result), "json")
 
 def add_tag(request):
     result = {}
-
     user = request.user
     if user:
         if request.is_ajax():
@@ -90,7 +93,7 @@ def add_tag(request):
             else:
                 result.update({"message":"Enter name tag please"})
         else:
-            result.update({"message":"WOK."})
+            result.update({"message":"WOK!"})
     else:
         result.update({"message":"Login please"})
     return HttpResponse(simplejson.dumps(result), "json")
@@ -104,7 +107,7 @@ def delete_tag(request):
             BugurtTags.objects.filter(bugurt=bugurt, tag=tag).delete()
             result.update({"bugurt": bugurt, "tag": tag})
         else:
-            result.update({"message":"WOK."})
+            result.update({"message":"WOK!"})
     else:
         result.update({"message": "Login please"})
     return HttpResponse(simplejson.dumps(result), "json")
@@ -141,7 +144,7 @@ def add_proof(request):
             else:
                 result.update({"message":"Enter name proof please"})
         else:
-            result.update({"message":"WOK."})
+            result.update({"message":"WOK!"})
     else:
         result.update({"message":"Login please"})
     return HttpResponse(simplejson.dumps(result), "json")
@@ -155,7 +158,7 @@ def delete_proof(request):
             BugurtProofs.objects.filter(bugurt=bugurt, proof=proof).delete()
             result.update({"bugurt": bugurt, "proof": proof})
         else:
-            result.update({"message":"WOK."})
+            result.update({"message":"WOK!"})
     else:
         result.update({"message":"Login please"})
     return HttpResponse(simplejson.dumps(result), "json")

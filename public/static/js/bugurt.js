@@ -1,6 +1,10 @@
 $(document).ready(function($) {
     $("#face").click(function(){
-        alert('Бугуртца?');
+        $.get('/ajax/reply/',
+            function(data){
+                alert(data);
+            }
+        );
     });
 
     /* like */

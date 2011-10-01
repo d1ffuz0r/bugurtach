@@ -64,7 +64,7 @@ a:hover {
     height: 103px;
     position: fixed;
     bottom: 0;
-    background: url(/static/images/face.png) no-repeat;
+    background: url(/public/static/images/face.png) no-repeat;
     cursor: pointer;
 }
 
@@ -100,7 +100,7 @@ a:hover {
     padding: 1px 12px 1px 12px;
 }
 
-.box1 .cont, .box1 .tags, .box1 .view-full, .box1 .proofs, .box1 .login-form, .box1 .reg-form, .box1 .add-bugurt, .box1 .settings {
+.box1 .cont, .box1 .tags, .box1 .view-full, .box1 .proofs, .box1 .login-form, .box1 .reg-form, .box1 .add-bugurt, .box1 .settings, .box1 .edit {
     margin: 10px;
 }
 .add-bugurt p{
@@ -111,7 +111,7 @@ a:hover {
 .add-bugurt label{
     float: left;
 }
-.add-bugurt input, textarea{
+.add-bugurt input, .add-bugurt textarea{
     width: 500px;
     float: right;
 }
@@ -189,7 +189,7 @@ a:hover {
     width: 8px;
     height: 21px;
     float: left;
-    background: url(/static/images/like.gif) no-repeat 0 0;
+    background: url(/public/static/images/like.gif) no-repeat 0 0;
     margin-top: 5px;
 }
 
@@ -198,7 +198,7 @@ a:hover {
     width: 8px;
     height: 21px;
     float: left;
-    background: url(/static/images/like.gif) no-repeat -9px 0;
+    background: url(/public/static/images/like.gif) no-repeat -9px 0;
     margin-top: 5px;
 }
 #commentaries{
@@ -219,3 +219,27 @@ a:hover {
     margin: 0;
     padding: 0;
 }
+
+#edit-bugurt{
+    
+}
+.edit div{
+    float: left;
+    width: 100%;
+}
+.edit ul{
+    float: left;
+}
+.edit li{
+    margin-left: 30px;
+    list-style-type: circle;
+}
+.add-form{
+    margin: 10px 0 0 30px;
+}
+.save{
+    margin: 10px 0 0 0;
+    text-align: right;
+}
+.delete_tag, .delete_proof, .add_tag, .add_proof{cursor: pointer;}
+.delete_tag:hover, .delete_proof:hover, .add_tag:hover, .add_proof:hover {color: red;}
