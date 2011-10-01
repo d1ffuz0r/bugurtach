@@ -38,6 +38,7 @@ ajax = patterns('',
     url('^ajax/delete_tag/', delete_tag),
     url('^ajax/add_proof/', add_proof),
     url('^ajax/delete_proof/', delete_proof),
+    #url('^ajax/autocomplite/', autocomplite),
 )
 
 urlpatterns += ajax

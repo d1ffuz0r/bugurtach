@@ -1,60 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="box1">
-        <div class="box-title">
-            <h3>{{ bugurt.name }} :: {{ bugurt.date|date:'' }}</h3>
-        </div>
+        <div class="box-title"><h3>{{ bugurt.name }} :: {{ bugurt.date|date:'' }} {% ifequal bugurt.author.id user.id %}
+            {% include 'includes/likes.html' %}
+            <a href="{{ bugurt.absolute_url }}edit/">Редактировать</a> | <a href="{{ bugurt.absolute_url }}delete/">Удалить</a>{% endifequal %}
+        </h3></div>
         <div class="cont">
             {{ bugurt.text|escape }}
         </div>
-        <div class="proofs">
-        пруфы:
-            <ul>
+        {% if bugurt.proofs %}
+            <div class="proofs">
+                Пруфы:
                 {% if bugurt.proofs.count %}
                     {% for proof in bugurt.proofs.all %}
-                        <li><a href="http://{{ proof.link }}" target="_blank">{{ proof.link }}</a></li>
+                        <a href="http://{{ proof.link }}" target="_blank">{{ proof.link }}</a>
                     {% endfor %}
                 {% endif %}
-            </ul>
-        </div>
-        {% include 'includes/likes.html' %}
+            </div>
+        {% endif %}
+        {% if bugurt.tags %}
+            <div class="tags">
+                <div>Теги:
+                    {% for tag in bugurt.tags.all %}
+                        <a href="/tags/{{ tag.title }}">{{ tag.title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
     </div>
     {% include 'includes/commentaries.html' %}
-{% endblock %}
-{% block rightbar %}
-<ul>
-    {% ifequal bugurt.author.id user.id %}
-    <li>
-        <h2>Options</h2>
-        <ul>
-            <li><a href="{{ bugurt.absolute_url }}edit/">Редактировать</a></li>
-            <li><a href="{{ bugurt.absolute_url }}delete/">Удалить</a></li>
-        </ul>
-    </li>
-    {% endifequal %}
-    <li>
-        <h2>Пруфы</h2>
-        <ul>
-            {% if bugurt.proofs.count %}
-                {% for proof in bugurt.proofs.all %}
-                    <li><a href="{{ proof.link }}">{{ proof.link }}</a></li>
-                {% endfor %}
-            {% else %}
-                <li><a>Нет тегов</a></li>
-            {% endif %}
-        </ul>
-    </li>
-    <li>
-    <h2>Теги</h2>
-        <ul>
-        {% if bugurt.tags.count %}
-                {% for tag in bugurt.tags.all %}
-                    <li><a href="/tags/{{ tag.title }}/">{{ tag.title }}</a></li>
-                {% endfor %}
-            {% else %}
-                <li><a>Нет тегов</a></li>
-            {% endif %}
-        </ul>
-    </li>
-</ul>
 {% endblock %}

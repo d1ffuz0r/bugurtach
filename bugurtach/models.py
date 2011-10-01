@@ -122,7 +122,7 @@ class BugurtTags(models.Model):
         verbose_name_plural = u'Теги бугуртов'
 
     def __unicode__(self):
-        return '%s : %s' %(self.bugurt, self.tag)
+        return self.tag
 
 class BugurtProofs(models.Model):
     bugurt = models.ForeignKey(Bugurt)
@@ -133,7 +133,7 @@ class BugurtProofs(models.Model):
         verbose_name_plural = u'Пруфы бугуртов'
 
     def __unicode__(self):
-        return '%s : %s' %(self.bugurt, self.proof)
+        return self.proof.link
 
 class Like(models.Model):
     user_id = models.ForeignKey(User)

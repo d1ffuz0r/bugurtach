@@ -56,7 +56,7 @@ $(document).ready(function($) {
                 }
                 else{
                     var c = data.comment;
-                    $('#comments').append('<li class="reply"><div>'+c.author+'</div><div>'+c.text+'</div><div>'+c.date+'</div></li>');
+                    $('#comments').append('<li id="comment'+c.id+'" class="reply"><div>#'+c.id+' '+c.author+' '+c.date+'</div><div>'+c.text+'</div></li>');
                 }
             }
         });
@@ -118,8 +118,7 @@ $(document).ready(function($) {
                     }
                     else{
                         $('#id_link').val('');
-                        $("#proofs").append('<li id="proof_'+data.id+'"><a>'+data.proof+'</a>:\
-                        <span id="'+data.id+'" class="delete_tag">удалить</span></li>');
+                        $("#proofs").append('<li id="proof_'+data.id+'"><a>'+data.proof+'</a>: <span id="'+data.id+'" class="delete_proof">удалить</span></li>');
                     }
                 }
             });
@@ -134,7 +133,7 @@ $(document).ready(function($) {
                 data: ({
                     'csrfmiddlewaretoken' : $('[name="csrfmiddlewaretoken"]').val(),
                     'bugurt': $('#bugurt').val(),
-                    'tag': proof
+                    'proof': proof
                 }),
                 success: function(){
                     $("#proof_"+proof).remove();
@@ -142,3 +141,16 @@ $(document).ready(function($) {
             });
         });
 });
+/*function lookup(inputString) {
+    if(inputString.length == 0) {
+        $('#suggestions').hide();
+    } else {
+        $.post("/ajax/autocomplite/", {text: inputString, csrfmiddlewaretoken : $('[name="csrfmiddlewaretoken"]').val()}, function(data){
+            if(data.length >0) {
+                $('#suggestions').show();
+                $('#autoSuggestionsList').html(data);
+            }
+        });
+    }
+}
+*/

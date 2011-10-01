@@ -43,11 +43,12 @@ a:hover {
     float: left;
 }
 
-#home-logo{
+#home-logo {
     width: 909px;
     height: 350px
 }
-#home-logo div{
+
+#home-logo div {
     margin-left: 230px;
     float: left;
     width: 400px;
@@ -79,6 +80,7 @@ a:hover {
     -moz-border-radius: 5px 5px 5px 5px;
     margin-bottom: 21px;
 }
+
 .box-title {
     margin: 10px;
 }
@@ -95,35 +97,51 @@ a:hover {
     line-height: 30px;
     height: 30px;
     font-size: 15px;
-    padding: 0 0 0 12px;
+    padding: 1px 12px 1px 12px;
 }
-.box1 .cont, .box1 .tags, .box1 .view-full, .box1 .proofs, .box1 .login-form{
+
+.box1 .cont, .box1 .tags, .box1 .view-full, .box1 .proofs, .box1 .login-form, .box1 .reg-form, .box1 .add-bugurt, .box1 .settings {
     margin: 10px;
 }
-.box1 .view-full{
+.add-bugurt p{
+    width: 620px;
+    float: left;
+    margin-bottom: 10px;
+}
+.add-bugurt label{
+    float: left;
+}
+.add-bugurt input, textarea{
+    width: 500px;
+    float: right;
+}
+.box1 .view-full {
     text-align: right;
 }
-.login-form{
-    
-}
-.login-form .error{
+
+.login-form .error, .reg-form .error,.errorlist {
     color: #ff0000;
+    margin-bottom: 10px;
 }
-#login{
-    width:300px;
+
+#login {
+    width: 300px;
     margin: 17% auto;
 }
-#login p{
-    height: 20px;
-}
-#login label{
 
-    
+#reg {
+    width: 400px;
+    margin: 17% auto;
 }
-#login input{
+
+#login p, #reg p{
+    height: 25px;
+}
+
+#login input, #reg input {
     float: right;
-    
 }
+
 .left {
     width: 695px;
     float: left;
@@ -166,21 +184,38 @@ a:hover {
     -webkit-border-radius: 5px;
 }
 
-.like{
+.like {
     cursor: pointer;
-    width: 15px;
-    height: 47px;
+    width: 8px;
+    height: 21px;
     float: left;
     background: url(/static/images/like.gif) no-repeat 0 0;
+    margin-top: 5px;
 }
-.dislike{
+
+.dislike {
     cursor: pointer;
-    width: 15px;
-    height: 47px;
+    width: 8px;
+    height: 21px;
     float: left;
-    background: url(/static/images/like.gif) no-repeat -20px 0;
+    background: url(/static/images/like.gif) no-repeat -9px 0;
+    margin-top: 5px;
 }
-#likes{
-    height: 50px;
-    margin: 10px;
+#commentaries{
+    float: left;
+}
+.suggestionsBox {
+    position: relative;
+    margin: 10px 0 0 0;
+    width: 300px;
+    background-color: #EFEFEF;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border: 2px solid #999;
+    color: #333;
+}
+
+.suggestionList {
+    margin: 0;
+    padding: 0;
 }

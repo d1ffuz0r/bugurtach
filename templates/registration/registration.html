@@ -1,8 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="/registration/" method="POST">
-        <p>{% csrf_token %}</p>
-        {{ reg_form.as_p }}
-        <p><input type="submit" value="Зарегистрироваться"></p>
-    </form>
+    <div class="box1" id="reg">
+        <div class="box-title">
+            <h3>Регистрация</h3>
+        </div>
+        <div class="reg-form">
+            <form action="/registration/" method="POST">
+                {% csrf_token %}
+                {% if reg_form.errors %}
+                    <span class="error">{{ reg_form.errors.username }}</span>
+                {% endif %}
+                <p><label for="id_username">Логин</label>{{ reg_form.username }}</p>
+                {% if reg_form.errors %}
+                    <span class="error">{{ reg_form.errors.password1 }}</span>
+                {% endif %}
+                <p><label for="id_password1">Пароль</label>{{ reg_form.password1 }}</p>
+                {% if reg_form.errors %}
+                    <span class="error">{{ reg_form.errors.password2 }}</span>
+                {% endif %}
+                <p><label for="id_password2">Пароль ещё раз</label>{{ reg_form.password2 }}</p>
+                <p><input type="submit" value="Зарегистрироваться"></p>
+            </form>
+        </div>
+    </div>
 {% endblock %}

@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="/bugurts/add/" method="POST">
-        <p>{% csrf_token %}</p>
-        {{ add_form.as_p }}
-        <p><input type="hidden" value="{{ user.id }}" name="author"></p>
-        <p><label for="tags">Теги:</label><input title="разделять через запятую" type="text" id="tags" name="tags"></p>
-        <p><label for="proofs">Пруфы:</label><textarea title="разделять через запятую" id="proofs" name="proofs"></textarea></p>
-        <p><input type="submit" value="Доставить"></p>
-    </form>
+    <div class="box1 add">
+        <div class="box-title">
+            <h3>Доставить бугурт</h3>
+        </div>
+        <div class="add-bugurt">
+            <form action="/bugurts/add/" method="POST">
+                <p>{% csrf_token %}</p>
+                {{ add_form.as_p }}
+                <input type="hidden" value="{{ user.id }}" name="author">
+                <p><label for="tags">Теги:</label><input title="разделять через запятую" type="text" id="tags" name="tags"></p>
+
+                {% comment %}onkeyup="lookup(this.value);"  <p><div class="suggestionsBox" id="suggestions" style="display: none;"><div class="suggestionList" id="autoSuggestionsList"></div></div></p>{% endcomment %}
+                <p><label for="proofs">Пруфы:</label><input  type="text"  title="разделять через запятую" id="proofs" name="proofs"></p>
+                
+                <p><input type="submit" value="Доставить"></p>
+            </form>
+        </div>
+    </div>
 {% endblock %}
