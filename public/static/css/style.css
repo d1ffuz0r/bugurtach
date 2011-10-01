@@ -64,7 +64,7 @@ a:hover {
     height: 103px;
     position: fixed;
     bottom: 0;
-    background: url(/public/static/images/face.png) no-repeat;
+    background: url(/static/images/face.png) no-repeat;
     cursor: pointer;
 }
 
@@ -189,7 +189,7 @@ a:hover {
     width: 8px;
     height: 21px;
     float: left;
-    background: url(/public/static/images/like.gif) no-repeat 0 0;
+    background: url(/static/images/like.gif) no-repeat 0 0;
     margin-top: 5px;
 }
 
@@ -198,7 +198,7 @@ a:hover {
     width: 8px;
     height: 21px;
     float: left;
-    background: url(/public/static/images/like.gif) no-repeat -9px 0;
+    background: url(/static/images/like.gif) no-repeat -9px 0;
     margin-top: 5px;
 }
 #commentaries{
