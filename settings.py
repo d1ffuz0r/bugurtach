@@ -122,7 +122,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'src.urls'
+ROOT_URLCONF = 'bugurt.urls'
 
 TEMPLATE_DIRS = ('D:/projects/bugurtach/src/public/templates',)
 

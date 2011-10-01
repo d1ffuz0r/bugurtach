@@ -1,6 +1,8 @@
+{% if user.is_authenticated %}
 <form action="/ajax/post_comment/" method="post">
     {% csrf_token %}
     <input type="hidden" id="bugurt" value="{{ bugurt.id }}">
     <p><label for="text">Комментарий</label><br /><textarea id="text" rows="10" cols="60"></textarea></p>
 </form>
 <button id="add_post">Ответить</button>
+{% endif %}

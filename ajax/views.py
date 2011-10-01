@@ -11,7 +11,7 @@ def reply(request):
 def like(request):
     result = {}
     user = request.user
-    if user:
+    if user.is_authenticated():
         if request.is_ajax():
             bugurt_id = request.POST["bugurt_id"]
             type = request.POST["type"]
@@ -40,7 +40,7 @@ def like(request):
 def add_comment(request):
     result = {}
     user = request.user
-    if user:
+    if user.is_authenticated():
         if request.is_ajax():
             bugurt = request.POST["bugurt"]
             text = request.POST["text"]
@@ -64,7 +64,7 @@ def add_comment(request):
 def add_tag(request):
     result = {}
     user = request.user
-    if user:
+    if user.is_authenticated():
         if request.is_ajax():
             bugurt = request.POST["bugurt"]
             tag = request.POST["tag"]
@@ -100,7 +100,7 @@ def add_tag(request):
 
 def delete_tag(request):
     result = {}
-    if request.user:
+    if request.user.is_authenticated():
         if request.is_ajax():
             bugurt = request.POST["bugurt"]
             tag = request.POST["tag"]
@@ -115,7 +115,7 @@ def delete_tag(request):
 def add_proof(request):
     result = {}
     user = request.user
-    if user:
+    if user.is_authenticated():
         if request.is_ajax():
             bugurt = request.POST["bugurt"]
             proof = request.POST["proof"]
@@ -151,7 +151,7 @@ def add_proof(request):
 
 def delete_proof(request):
     result = {}
-    if request.user:
+    if request.user.is_authenticated():
         if request.is_ajax():
             bugurt = request.POST["bugurt"]
             proof = request.POST["proof"]

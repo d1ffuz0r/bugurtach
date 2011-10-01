@@ -18,7 +18,7 @@ class EditBugurt(forms.ModelForm):
         fields = ('name', 'text')
         widgets = {
             'name': forms.TextInput(attrs={'style':'margin-bottom:10px;'}),
-            'text': forms.Textarea(attrs={'style':'margin-left:42px;'}),
+            'text': forms.Textarea(attrs={'style':'margin-left:42px;', 'cols':30, 'rows': 20}),
         }
 
 class AddTag(forms.Form):

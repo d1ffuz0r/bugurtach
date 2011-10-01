@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="box1">
-        <div class="box-title"><h3>{{ bugurt.name }} :: {{ bugurt.date|date:'' }} {% ifequal bugurt.author.id user.id %}
+        <div class="box-title"><h3>{{ bugurt.name }} :: {{ bugurt.date|date:'' }}
+            {% ifequal bugurt.author.id user.id %}<a href="{{ bugurt.absolute_url }}edit/">Редактировать</a> | <a href="{{ bugurt.absolute_url }}delete/">Удалить</a>{% endifequal %}
             {% include 'includes/likes.html' %}
-            <a href="{{ bugurt.absolute_url }}edit/">Редактировать</a> | <a href="{{ bugurt.absolute_url }}delete/">Удалить</a>{% endifequal %}
         </h3></div>
         <div class="cont">
             {{ bugurt.text|escape }}
