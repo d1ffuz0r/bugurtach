@@ -3,11 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
-from bugurtach.forms import EditBugurt, AddTag, AddProof
-from bugurtach.models import Tag, BugurtTags, Proof, BugurtProofs, Comments
+from bugurtach.forms import EditBugurt, AddTag, AddProof, AddBugurt
+from bugurtach.models import Tag, BugurtTags, Proof, BugurtProofs, Comments, Bugurt
 from decorators import render_to
-from models import Bugurt
-from forms import AddBugurt
 
 @render_to('home.html')
 def homepage(request):
