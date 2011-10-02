@@ -12,7 +12,7 @@
                     {% if bugurt.tags.count %}
                         <div>Теги:
                             {% for tag in bugurt.tags.all %}
-                                <a href="/tags/{{ tag.title }}">{{ tag.title }}</a>
+                                <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
                             {% endfor %}
                         </div>
                     {% endif %}

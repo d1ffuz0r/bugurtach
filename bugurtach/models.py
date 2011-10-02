@@ -72,9 +72,9 @@ class Bugurt(models.Model):
 
     @classmethod
     def get_by_name(cls, name):
-        result = cls.objects.filter(name__contains=name)
+        result = cls.objects.get(name=name)
         if result:
-            return result[0]
+            return result
         else:
             raise Http404
 
