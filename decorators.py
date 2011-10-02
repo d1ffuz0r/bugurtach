@@ -34,10 +34,10 @@ def render_json(func):
             assert isinstance(response, dict)
         except ValueError:
             pass
-        return HttpResponse(simplejson.dumps(response), mimetype='application/json')
+        return HttpResponse(simplejson.dumps(response), mimetype="application/json")
     return wrap
 
-def check(func):
+def check_ajax(func):
     """
     decorator for check on login and ajax method
     """
@@ -47,9 +47,9 @@ def check(func):
             if user.is_authenticated():
                 return func(request, *args, **kwargs)
             else:
-                res = func.result={'message':'Залогинься сучечка'}
+                res = func.result={"message":"Залогинься сучечка"}
                 return res
         else:
-            res = func.result={'message':'WOK!'}
+            res = func.result={"message":"WOK!"}
             return res
     return wrap

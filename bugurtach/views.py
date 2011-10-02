@@ -1,66 +1,66 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from bugurtach.models import Tag, BugurtTags, Proof, BugurtProofs, Comments, Bugurt
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from bugurtach.forms import EditBugurt, AddTag, AddProof, AddBugurt
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
-from bugurtach.forms import EditBugurt, AddTag, AddProof, AddBugurt
-from bugurtach.models import Tag, BugurtTags, Proof, BugurtProofs, Comments, Bugurt
 from decorators import render_to
 
-@render_to('home.html')
+@render_to("home.html")
 def homepage(request):
-    bugurts = Bugurt.objects.order_by('-id')[:10]
-    top_bugurts = Bugurt.objects.order_by('-likes').order_by('-comments')[:10]
+    bugurts = Bugurt.objects.order_by("-id")[:10]
+    top_bugurts = Bugurt.objects.order_by("-likes").order_by("-comments")[:10]
     tags = Tag.objects.all()
-    latest_comments = Comments.objects.order_by('-id')[:10]
-    return {'latest_bugurts': bugurts,
-            'top_bugurts': top_bugurts,
-            'tags': tags,
-            'latest_comments': latest_comments}
+    latest_comments = Comments.objects.order_by("-id")[:10]
+    return {"latest_bugurts": bugurts,
+            "top_bugurts": top_bugurts,
+            "tags": tags,
+            "latest_comments": latest_comments}
 
 @login_required(login_url="/login/")
-@render_to('settings.html')
+@render_to("settings.html")
 def user_settings(request):
-    msg = ''
+    msg = ""
     if request.POST:
         form_password = PasswordChangeForm(request.user, request.POST)
         if form_password.is_valid():
             form_password.save()
-            msg = 'Saved'
+            msg = "СХОРОНИЛ!"
     else:
         form_password = PasswordChangeForm(request.user)
-    return {'form_password': form_password,
-            'msg': msg}
+    return {"form_password": form_password,
+            "msg": msg}
 
-@render_to('registration/registration.html')
+@render_to("registration/registration.html")
 def registration(request):
     if  request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password1']
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data["password1"]
             )
             login(request, user)
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect("/")
     else:
         form = UserCreationForm
-    return {'reg_form': form}
+    return {"reg_form": form}
 
-@render_to('bugurts/bugurts.html')
+@render_to("bugurts/bugurts.html")
 def all_bugurts(request):
-    bugurts = Bugurt.objects.order_by('-date')
-    return {'bugurts': bugurts}
+    bugurts = Bugurt.objects.order_by("-date")
+    return {"bugurts": bugurts}
 
 def _create_bugurt(form, request):
     data = form.data
-    tag_names = data['tags'].replace(' ,', ',').replace(', ', ',').split(',')
-    bugurt_links = data['proofs'].replace(' ,', ',').replace(', ', ',').split(',')
+    tag_names = data["tags"].replace(" ,", ",").replace(", ", ",").split(",")
+    bugurt_links = data["proofs"].replace(" ,", ",").replace(", ", ",").split(",")
 
-    bugurt = Bugurt.objects.create(name=data['name'],
+    bugurt = Bugurt.objects.create(name=data["name"],
         author=request.user,
-        text=data['text'])
+        text=data["text"])
     tt = []
     for name in tag_names:
         tag = Tag.objects.filter(title=name)
@@ -88,35 +88,35 @@ def _create_bugurt(form, request):
     bugurt.save()
 
 @login_required(login_url="/login/")
-@render_to('bugurts/add.html')
+@render_to("bugurts/add.html")
 def add_bugurt(request):
-    if request.method == 'POST':
-        form = AddBugurt(request.POST, initial={'author': request.user})
+    if request.method == "POST":
+        form = AddBugurt(request.POST, initial={"author": request.user})
         if form.is_valid():
             _create_bugurt(form, request)
-            return HttpResponseRedirect('/user/%s/' % request.user)
+            return HttpResponseRedirect("/user/%s/" % request.user)
     else:
         form = AddBugurt
-    return {'add_form': form}
+    return {"add_form": form}
 
 @login_required(login_url="/login/")
-@render_to('bugurts/edit.html')
+@render_to("bugurts/edit.html")
 def edit_bugurt(request, name):
     bugurt = Bugurt.get_by_name(name)
     if request.user.username == bugurt.author.username:
         if request.POST:
             edit_form = EditBugurt(request.POST)
             if edit_form.is_valid():
-                bugurt.name = edit_form.cleaned_data['name']
-                bugurt.text = edit_form.cleaned_data['text']
+                bugurt.name = edit_form.cleaned_data["name"]
+                bugurt.text = edit_form.cleaned_data["text"]
                 bugurt.save()
                 return HttpResponseRedirect(bugurt.get_absolute_url())
         else:
-            edit_form = EditBugurt(initial={'name': bugurt.name, 'text': bugurt.text})
-        return {'edit_form': edit_form,
-                'bugurt': bugurt,
-                'tag_add': AddTag(),
-                'proof_add': AddProof()}
+            edit_form = EditBugurt(initial={"name": bugurt.name, "text": bugurt.text})
+        return {"edit_form": edit_form,
+                "bugurt": bugurt,
+                "tag_add": AddTag(),
+                "proof_add": AddProof()}
     else:
         return HttpResponseRedirect(bugurt.get_absolute_url())
 
@@ -127,20 +127,20 @@ def delete_bugurt(request, name):
         bugurt.delete()
         return HttpResponseRedirect("/user/%s/" % request.user)
     else:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect("/")
 
-@render_to('bugurts/view.html')
+@render_to("bugurts/view.html")
 def view_bugurt(request, bugurt):
-    return {'bugurt': Bugurt.get_by_name(bugurt)}
+    return {"bugurt": Bugurt.get_by_name(bugurt)}
 
-@render_to('bugurts/bugurts.html')
+@render_to("bugurts/bugurts.html")
 def view_user(request, username):
-    return {'bugurts': Bugurt.get_by_author(username)}
+    return {"bugurts": Bugurt.get_by_author(username)}
 
-@render_to('bugurts/bugurts.html')
+@render_to("bugurts/bugurts.html")
 def view_tags(request, tag):
-    return {'bugurts': Bugurt.get_by_tag(tag)}
+    return {"bugurts": Bugurt.get_by_tag(tag)}
 
-@render_to('tags.html')
+@render_to("tags.html")
 def view_all_tags(request):
-    return {'tags': Tag.all()}
+    return {"tags": Tag.all()}

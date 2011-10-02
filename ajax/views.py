@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponse
 from bugurtach.models import Bugurt, Comments, BugurtTags, Tag, Proof, BugurtProofs
+from decorators import render_json, check_ajax
+from django.http import HttpResponse
 from django.utils.html import escape
-from decorators import render_json, check
 
 def reply(request):
     random_reply = Comments.objects.order_by('?')[0].text
     return HttpResponse(random_reply)
 
 @render_json
-@check
+@check_ajax
 def like(request):
     result = {}
     user = request.user
@@ -34,13 +34,13 @@ def like(request):
     return result
 
 @render_json
-@check
+@check_ajax
 def add_comment(request):
     result = {}
     if request.POST["text"]:
         comment = Comments.objects.create(author=request.user,
-            bugurt=Bugurt.objects.get(id=request.POST["bugurt"]),
-                                      text=request.POST["text"])
+                                          bugurt=Bugurt.objects.get(id=request.POST["bugurt"]),
+                                          text=request.POST["text"])
         result.update({"comment": {"id": comment.id,
                                    "author": comment.author.username,
                                    "text": escape(comment.text),
@@ -51,11 +51,11 @@ def add_comment(request):
     return result
 
 @render_json
-@check
+@check_ajax
 def add_tag(request):
     result = {}
     bugurt = request.POST["bugurt"]
-    tag = request.POST["tag"]
+    tag = escape(request.POST["tag"])
     if tag:
         bugurt_obj = Bugurt.objects.get(id=bugurt)
         tag_obj = Tag.objects.filter(title=tag)
@@ -83,7 +83,7 @@ def add_tag(request):
     return result
 
 @render_json
-@check
+@check_ajax
 def delete_tag(request):
     result = {}
     bugurt = request.POST["bugurt"]
@@ -94,12 +94,12 @@ def delete_tag(request):
     return result
 
 @render_json
-@check
+@check_ajax
 def add_proof(request):
     result = {}
     user = request.user
     bugurt = request.POST["bugurt"]
-    proof = request.POST["proof"]
+    proof = escape(request.POST["proof"])
     if proof:
         bugurt_obj = Bugurt.objects.get(id=bugurt)
         proof_obj = Proof.objects.filter(link=proof)
@@ -127,7 +127,7 @@ def add_proof(request):
     return result
 
 @render_json
-@check
+@check_ajax
 def delete_proof(request):
     result = {}
     bugurt = request.POST["bugurt"]
@@ -137,10 +137,10 @@ def delete_proof(request):
     result.update({"bugurt": bugurt, "proof": proof})
     return result
 
-@check
+@check_ajax
 def autocomplite(request):
     result = ''
-    text = request.POST["text"]
+    text = escape(request.POST["text"])
     tags = Tag.objects.filter(title__contains=text)
     for tag in tags:
         result += "<li>%s</li>" % tag.title

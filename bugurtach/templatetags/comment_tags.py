@@ -5,8 +5,8 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def comments_bugurt(context, bugurt, right=None):
     if right:
-        comments = Comments.objects.filter(bugurt=bugurt).order_by('date')[:5]
+        comments = Comments.objects.filter(bugurt=bugurt).order_by("date")[:5]
     else:
-        comments = Comments.objects.filter(bugurt=bugurt).order_by('date')
-    context['comments'] = comments
-    return ''
+        comments = Comments.objects.filter(bugurt=bugurt).order_by("date")
+    context["comments"] = comments
+    return ""

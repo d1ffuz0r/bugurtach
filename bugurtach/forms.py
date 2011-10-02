@@ -5,24 +5,24 @@ from django import forms
 class AddBugurt(forms.ModelForm):
     class Meta:
         model = Bugurt
-        fields = ('name', 'text', 'author')
+        fields = ("name", "text", "author")
         widgets = {
-            'name': forms.TextInput({'required': True}),
-            'text': forms.Textarea({'required': True}),
-            'author': forms.HiddenInput()
+            "name": forms.TextInput({"required": True}),
+            "text": forms.Textarea({"required": True}),
+            "author": forms.HiddenInput()
         }
 
 class EditBugurt(forms.ModelForm):
     class Meta:
         model = Bugurt
-        fields = ('name', 'text')
+        fields = ("name", "text")
         widgets = {
-            'name': forms.TextInput(attrs={'style':'margin-bottom:10px;'}),
-            'text': forms.Textarea(attrs={'style':'margin-left:42px;', 'cols':30, 'rows': 20}),
+            "name": forms.TextInput(attrs={"style":"margin-bottom:10px;", "size":77}),
+            "text": forms.Textarea(attrs={"style":"margin-left:42px;", "cols":60, "rows": 20}),
         }
 
 class AddTag(forms.Form):
-    title = forms.CharField(label="", widget=forms.TextInput(attrs={'title': 'Одно название тега'}))
+    title = forms.CharField(label="", widget=forms.TextInput(attrs={"title": "Одно название тега"}))
 
 class AddProof(forms.Form):
-    link = forms.CharField(label="", widget=forms.TextInput(attrs={'title': 'Один линк пруфа'}))
+    link = forms.CharField(label="", widget=forms.TextInput(attrs={"title": "Один линк пруфа"}))
