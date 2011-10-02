@@ -42,14 +42,11 @@ def check_ajax(func):
     decorator for check on login and ajax method
     """
     def wrap(request, *args, **kwargs):
-        user = request.user
         if request.is_ajax():
-            if user.is_authenticated():
+            if request.user.is_authenticated():
                 return func(request, *args, **kwargs)
             else:
-                res = func.result={"message":"Залогинься сучечка"}
-                return res
+                return {"message":"Залогинься сучечка"}
         else:
-            res = func.result={"message":"WOK!"}
-            return res
+            return {"message":"WOK!"}
     return wrap
