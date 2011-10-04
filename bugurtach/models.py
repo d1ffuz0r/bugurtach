@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
-from django.http import Http404
 from django.db import models
 
 class CustomUser(models.Model):
@@ -63,7 +62,7 @@ class Bugurt(models.Model):
     author = models.ForeignKey(User)
     tags = models.ManyToManyField(Tag, through="BugurtTags", blank=True)
     proofs = models.ManyToManyField(Proof, through="BugurtProofs")
-    comments = models.ManyToManyField("Comments", blank=True, related_name="bugurtcomments")
+    comments = models.ManyToManyField("Comments", related_name="bugurtcomments", blank=True)
 
     class Meta:
         verbose_name = u"Бугурт"
@@ -72,11 +71,11 @@ class Bugurt(models.Model):
 
     @classmethod
     def get_by_name(cls, name):
-        result = cls.objects.get(name=name)
+        result = cls.objects.filter(name=name)
         if result:
             return result
         else:
-            raise Http404
+            return False
 
     def get_absolute_url(self):
         return u"/bugurts/%s/" % self.name
@@ -90,7 +89,7 @@ class Bugurt(models.Model):
         if result:
             return result
         else:
-            return Http404
+            return False
 
     @classmethod
     def get_by_tag(cls, tag):
@@ -124,7 +123,7 @@ class BugurtTags(models.Model):
         verbose_name_plural = u"Теги бугуртов"
 
     def __unicode__(self):
-        return self.tag
+        return self.tag.title
 
 class BugurtProofs(models.Model):
     bugurt = models.ForeignKey(Bugurt)

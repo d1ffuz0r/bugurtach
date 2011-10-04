@@ -9,7 +9,7 @@
             {% if latest_bugurts %}
                 {% for bugurt in latest_bugurts %}
                     <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a
-                            href="/bugurts/{{ bugurt.author }}">{{ bugurt.author }}</a></li>
+                            href="/user/{{ bugurt.author }}/">{{ bugurt.author }}</a></li>
                 {% endfor %}
             {% else %}
                 <li><a>Нет бугуртов</a></li>
@@ -22,7 +22,7 @@
             {% if top_bugurts %}
                 {% for bugurt in top_bugurts %}
                     <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a
-                            href="/bugurts/{{ bugurt.author }}">{{ bugurt.author }}</a> {{ bugurt.likes }}</li>
+                            href="/user/{{ bugurt.author }}/">{{ bugurt.author }}</a> {{ bugurt.likes }}</li>
                 {% endfor %}
             {% else %}
                 <li><a>Нет бугуртов</a></li>
@@ -34,7 +34,7 @@
         <ul style="margin-left: 20px; overflow: hidden;">
             {% if latest_comments %}
                 {% for comment in latest_comments %}
-                    <li><a href="/bugurts/{{ comment.author }}">{{ comment.author }}</a>: <a
+                    <li><a href="/user/{{ comment.author }}/">{{ comment.author }}</a>: <a
                             href="{{ comment.bugurt.get_absolute_url }}#comment{{ comment.id }}">{{ comment.text|truncatewords:40 }}</a>
                     </li>
                 {% endfor %}

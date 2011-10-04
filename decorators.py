@@ -46,7 +46,7 @@ def check_ajax(func):
             if request.user.is_authenticated():
                 return func(request, *args, **kwargs)
             else:
-                return {"message":"Залогинься сучечка"}
+                return {"message": "Залогинься сучечка"}
         else:
-            return {"message":"WOK!"}
+            return {"message": "WOK!"}
     return wrap

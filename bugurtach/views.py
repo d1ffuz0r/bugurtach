@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from bugurtach.forms import EditBugurt, AddTag, AddProof, AddBugurt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from decorators import render_to
 
 @render_to("home.html")
@@ -131,11 +131,19 @@ def delete_bugurt(request, name):
 
 @render_to("bugurts/view.html")
 def view_bugurt(request, bugurt):
-    return {"bugurt": Bugurt.get_by_name(bugurt)}
+    bugurt_obj = Bugurt.get_by_name(bugurt)
+    if bugurt_obj:
+        return {"bugurt": bugurt_obj}
+    else:
+        raise Http404
 
 @render_to("bugurts/bugurts.html")
 def view_user(request, username):
-    return {"bugurts": Bugurt.get_by_author(username)}
+    bugurt_objects = Bugurt.get_by_author(username)
+    if bugurt_objects:
+        return {"bugurts": bugurt_objects}
+    else:
+        return Http404
 
 @render_to("bugurts/bugurts.html")
 def view_tags(request, tag):
