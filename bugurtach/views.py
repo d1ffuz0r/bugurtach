@@ -7,16 +7,13 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, Http404
 from decorators import render_to
 
+
 @render_to("home.html")
 def homepage(request):
-    bugurts = Bugurt.objects.order_by("-id")[:10]
-    top_bugurts = Bugurt.objects.order_by("-likes").order_by("-comments")[:10]
-    tags = Tag.objects.all()
-    latest_comments = Comments.objects.order_by("-id")[:10]
-    return {"latest_bugurts": bugurts,
-            "top_bugurts": top_bugurts,
-            "tags": tags,
-            "latest_comments": latest_comments}
+    return {"tags": Tag.all(),
+            "top_bugurts": Bugurt.top(),
+            "latest_bugurts": Bugurt.latest(),
+            "latest_comments": Comments.latest_comments()}
 
 @login_required(login_url="/login/")
 @render_to("settings.html")
@@ -50,8 +47,7 @@ def registration(request):
 
 @render_to("bugurts/bugurts.html")
 def all_bugurts(request):
-    bugurts = Bugurt.objects.order_by("-date")
-    return {"bugurts": bugurts}
+    return {"bugurts": Bugurt.all()}
 
 def _create_bugurt(form, request):
     data = form.data
@@ -96,7 +92,7 @@ def add_bugurt(request):
             _create_bugurt(form, request)
             return HttpResponseRedirect("/user/%s/" % request.user)
     else:
-        form = AddBugurt
+        form = AddBugurt()
     return {"add_form": form}
 
 @login_required(login_url="/login/")

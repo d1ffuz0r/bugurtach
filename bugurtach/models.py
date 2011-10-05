@@ -69,6 +69,16 @@ class Bugurt(models.Model):
         verbose_name_plural = u"Бугурты"
         ordering = ("-date",)
 
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return u"/bugurts/%s/" % self.name
+
+    @classmethod
+    def all(cls):
+        return cls.objects.order_by("-date")
+
     @classmethod
     def get_by_name(cls, name):
         result = cls.objects.filter(name=name)
@@ -76,12 +86,6 @@ class Bugurt(models.Model):
             return result
         else:
             return False
-
-    def get_absolute_url(self):
-        return u"/bugurts/%s/" % self.name
-
-    def __unicode__(self):
-        return self.name
 
     @classmethod
     def get_by_author(cls, username):
@@ -113,6 +117,15 @@ class Bugurt(models.Model):
                 bugurt_obj.likes -= 1
                 bugurt_obj.save()
         return bugurt_obj.likes
+
+    @classmethod
+    def top(cls):
+        return cls.objects.order_by("-likes").order_by("-comments")[:10]
+
+    @classmethod
+    def latest(cls):
+        return cls.objects.order_by("-id")[:10]
+
 
 class BugurtTags(models.Model):
     bugurt = models.ForeignKey(Bugurt)
@@ -160,3 +173,7 @@ class Comments(models.Model):
 
     def __unicode__(self):
         return "%s : %s..." % (self.author, self.text)
+
+    @classmethod
+    def latest_comments(cls):
+        return cls.objects.order_by("-id")[:10]

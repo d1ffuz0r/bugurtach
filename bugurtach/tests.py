@@ -55,6 +55,9 @@ class TestModels(TestCase):
     def test_bugurt_not_equal(self):
         self.assertNotEqual(self.bugurt.__unicode__(), "test1")
 
+    def test_bugurt_all(self):
+        self.assertEqual(len(self.bugurt.all()), 1)
+
     def test_bugurt_by_name(self):
         self.assertEqual(self.bugurt.get_by_name("test")[0].name, "test")
 
@@ -69,6 +72,12 @@ class TestModels(TestCase):
 
     def test_bugurt_by_tag(self):
         self.assertEqual(self.bugurt.get_by_tag("test")[0].name, "test")
+
+    def test_bugurt_top(self):
+        self.assertEqual(self.bugurt.top()[0].name, "test")
+
+    def test_bugurt_latest(self):
+        self.assertEqual(self.bugurt.latest()[0].name, "test")
 
     def test_bugurt_absolute_url(self):
         self.assertEqual(self.bugurt.get_absolute_url(), u"/bugurts/test/")
@@ -97,6 +106,9 @@ class TestModels(TestCase):
 
     def test_comment(self):
         self.assertEqual(self.comment.__unicode__(), "root1 : test...")
+
+    def test_comment_latest(self):
+        self.assertEqual(self.comment.latest_comments()[0].author.username, "root1")
 
     def doCleanups(self):
         self.user.delete()
