@@ -59,7 +59,7 @@ class TestModels(TestCase):
         self.assertEqual(len(self.bugurt.all()), 1)
 
     def test_bugurt_by_name(self):
-        self.assertEqual(self.bugurt.get_by_name("test")[0].name, "test")
+        self.assertEqual(self.bugurt.get_by_name("test").name, "test")
 
     def test_bugurt_by_name_error(self):
         self.assertFalse(self.bugurt.get_by_name("nosdfag"))

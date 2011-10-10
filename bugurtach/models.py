@@ -83,7 +83,7 @@ class Bugurt(models.Model):
     def get_by_name(cls, name):
         result = cls.objects.filter(name=name)
         if result:
-            return result
+            return result[0]
         else:
             return False
 
@@ -125,6 +125,25 @@ class Bugurt(models.Model):
     @classmethod
     def latest(cls):
         return cls.objects.order_by("-id")[:10]
+
+    @classmethod
+    def create_bugurt(cls, form, user):
+        prepare = lambda string, type: string[type].replace(" ,", ",").replace(", ", ",").split(",")
+        data = form.data
+        tag_names = prepare(data, "tags")
+        bugurt_links = prepare(data, "proofs")
+        bugurt = cls.objects.create(name=data["name"],
+            author=user,
+            text=data["text"])
+        for name in tag_names:
+            if name is not "":
+                t, created = Tag.objects.get_or_create(title=name)
+                bugurt.bugurttags_set.create(bugurt=bugurt, tag=t)
+        for link in bugurt_links:
+            if link is not "":
+                p, created = Proof.objects.get_or_create(link=link)
+                bugurt.bugurtproofs_set.create(bugurt=bugurt, proof=p)
+        bugurt.save()
 
 
 class BugurtTags(models.Model):

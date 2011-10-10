@@ -38,14 +38,17 @@ def like(request):
 def add_comment(request):
     result = {}
     if request.POST["text"]:
-        comment = Comments.objects.create(author=request.user,
-                                          bugurt=Bugurt.objects.get(id=request.POST["bugurt"]),
-                                          text=request.POST["text"])
-        result.update({"comment": {"id": comment.id,
-                                   "author": comment.author.username,
-                                   "text": escape(comment.text),
-                                   "date": comment.date.strftime("%d.%m.%y, %H:%M")}})
-        comment.save()
+        comment, created = Comments.objects.get_or_create(author=request.user,
+                                                          bugurt=Bugurt.objects.get(id=request.POST["bugurt"]),
+                                                          text=request.POST["text"])
+        if created:
+            result.update({"comment": {"id": comment.id,
+                                       "author": comment.author.username,
+                                       "text": escape(comment.text),
+                                       "date": comment.date.strftime("%d.%m.%y, %H:%M")}})
+            comment.save()
+        else:
+            result.update({"message": "Already exist"})
     else:
         result.update({"message":"Enter message please"})
     return result
@@ -58,24 +61,14 @@ def add_tag(request):
     tag = escape(request.POST["tag"])
     if tag:
         bugurt_obj = Bugurt.objects.get(id=bugurt)
-        tag_obj = Tag.objects.filter(title=tag)
         if bugurt_obj.author.username == request.user.username:
-            if tag_obj:
-                t = Tag.objects.get(title=tag)
-                btag = BugurtTags.objects.filter(bugurt=bugurt_obj, tag=tag_obj)
-                if not btag:
-                    BugurtTags(bugurt=bugurt_obj, tag=t).save()
-                    result.update({"tag": t.title, "id": t.id})
-                else:
-                    result.update({"message": "Already exist"})
+            t, created = Tag.objects.get_or_create(title=tag)
+            btag = BugurtTags.objects.filter(bugurt=bugurt_obj, tag=t)
+            if not btag:
+                BugurtTags(bugurt=bugurt_obj, tag=t).save()
+                result.update({"tag": t.title, "id": t.id})
             else:
-                t = Tag.objects.create(title=tag)
-                btag = BugurtTags.objects.filter(bugurt=bugurt_obj, tag=tag_obj)
-                if not btag:
-                    BugurtTags(bugurt=bugurt_obj, tag=t).save()
-                    result.update({"tag": t.title, "id": t.id})
-                else:
-                    result.update({"message": "Already exist"})
+                result.update({"message": "Already exist"})
         else:
             result.update({"message":"4itak dohuya?"})
     else:
@@ -85,41 +78,27 @@ def add_tag(request):
 @render_json
 @check_ajax
 def delete_tag(request):
-    result = {}
     bugurt = request.POST["bugurt"]
     tag = request.POST["tag"]
-    BugurtTags.objects.filter(bugurt=bugurt,
-                              tag=tag).delete()
-    result.update({"bugurt": bugurt, "tag": tag})
-    return result
+    BugurtTags.objects.filter(bugurt=bugurt, tag=tag).delete()
+    return {"bugurt": bugurt, "tag": tag}
 
 @render_json
 @check_ajax
 def add_proof(request):
     result = {}
-    user = request.user
     bugurt = request.POST["bugurt"]
     proof = escape(request.POST["proof"])
     if proof:
         bugurt_obj = Bugurt.objects.get(id=bugurt)
-        proof_obj = Proof.objects.filter(link=proof)
-        if bugurt_obj.author.username == user.username:
-            if proof_obj:
-                p = Proof.objects.get(link=proof)
-                bproof = BugurtProofs.objects.filter(bugurt=bugurt_obj, proof=proof_obj)
-                if not bproof:
-                    BugurtProofs(bugurt=bugurt_obj, proof=p).save()
-                    result.update({"proof": p.link, "id": p.id})
-                else:
-                    result.update({"message": "Already exist"})
+        if bugurt_obj.author.username == request.user.username:
+            p, created = Proof.objects.get_or_create(link=proof)
+            bproof = BugurtProofs.objects.filter(bugurt=bugurt_obj, proof=p)
+            if not bproof:
+                BugurtProofs(bugurt=bugurt_obj, proof=p).save()
+                result.update({"proof": p.link, "id": p.id})
             else:
-                p = Proof.objects.create(link=proof)
-                bproof = BugurtProofs.objects.filter(bugurt=bugurt_obj, proof=proof_obj)
-                if not bproof:
-                    BugurtProofs(bugurt=bugurt_obj, proof=p).save()
-                    result.update({"proof": p.link, "id": p.id})
-                else:
-                    result.update({"message": "Already exist"})
+                result.update({"message": "Already exist"})
         else:
             result.update({"message":"4itak dohuya?"})
     else:
@@ -129,13 +108,10 @@ def add_proof(request):
 @render_json
 @check_ajax
 def delete_proof(request):
-    result = {}
     bugurt = request.POST["bugurt"]
     proof = request.POST["proof"]
-    BugurtProofs.objects.filter(bugurt=bugurt,
-                                proof=proof).delete()
-    result.update({"bugurt": bugurt, "proof": proof})
-    return result
+    BugurtProofs.objects.filter(bugurt=bugurt, proof=proof).delete()
+    return {"bugurt": bugurt, "proof": proof}
 
 @check_ajax
 def autocomplite(request):

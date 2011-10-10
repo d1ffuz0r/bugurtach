@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from bugurtach.models import Tag, BugurtTags, Proof, BugurtProofs, Comments, Bugurt
+from bugurtach.models import Tag, Comments, Bugurt
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from bugurtach.forms import EditBugurt, AddTag, AddProof, AddBugurt
 from django.contrib.auth.decorators import login_required
@@ -31,7 +31,7 @@ def user_settings(request):
 
 @render_to("registration/registration.html")
 def registration(request):
-    if  request.method == "POST":
+    if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
@@ -49,48 +49,15 @@ def registration(request):
 def all_bugurts(request):
     return {"bugurts": Bugurt.all()}
 
-def _create_bugurt(form, request):
-    data = form.data
-    tag_names = data["tags"].replace(" ,", ",").replace(", ", ",").split(",")
-    bugurt_links = data["proofs"].replace(" ,", ",").replace(", ", ",").split(",")
-
-    bugurt = Bugurt.objects.create(name=data["name"],
-        author=request.user,
-        text=data["text"])
-    tt = []
-    for name in tag_names:
-        tag = Tag.objects.filter(title=name)
-        if tag:
-            t = Tag.objects.get(title=name)
-            BugurtTags(bugurt=bugurt, tag=t).save()
-            tt.append(t)
-        else:
-            t = Tag.objects.create(title=name)
-            BugurtTags(bugurt=bugurt, tag=t).save()
-            tt.append(t)
-    pp = []
-    for link in bugurt_links:
-            proof = Proof.objects.filter(link=link)
-            if proof:
-                p = Proof.objects.get(link=link)
-                BugurtProofs(bugurt=bugurt, proof=p).save()
-                pp.append(p)
-            else:
-                p = Proof.objects.create(link=link)
-                BugurtProofs(bugurt=bugurt, proof=p).save()
-                pp.append(p)
-    bugurt.tags_set = tt
-    bugurt.proofs_set = pp
-    bugurt.save()
-
 @login_required(login_url="/login/")
 @render_to("bugurts/add.html")
 def add_bugurt(request):
+    user = request.user
     if request.method == "POST":
-        form = AddBugurt(request.POST, initial={"author": request.user})
+        form = AddBugurt(request.POST, initial={"author": user})
         if form.is_valid():
-            _create_bugurt(form, request)
-            return HttpResponseRedirect("/user/%s/" % request.user)
+            Bugurt.create_bugurt(form=form, user=user)
+            return HttpResponseRedirect("/user/%s/" % user)
     else:
         form = AddBugurt()
     return {"add_form": form}

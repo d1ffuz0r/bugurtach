@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 #from django.views.decorators.cache import cache_control
-from django.utils import simplejson
+from django.utils.simplejson import dumps
 
 def render_to(template):
     """
@@ -34,7 +34,7 @@ def render_json(func):
             assert isinstance(response, dict)
         except ValueError:
             pass
-        return HttpResponse(simplejson.dumps(response), mimetype="application/json")
+        return HttpResponse(dumps(response), mimetype="application/json")
     return wrap
 
 def check_ajax(func):
