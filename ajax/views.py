@@ -16,7 +16,7 @@ def like(request):
     bugurt_id = request.POST["bugurt_id"]
     type = request.POST["type"]
     if type == "like":
-        like = Bugurt.like(user, bugurt_id, "like")
+        like = Bugurt.manager.like(user, bugurt_id, "like")
         if like:
             result.update({"message": "Охуенно!",
                            "post": bugurt_id,
@@ -24,7 +24,7 @@ def like(request):
         else:
             result.update({"message": "Вы уже голосовали за этот бугурт"})
     if type == "dislike":
-        like = Bugurt.like(user, bugurt_id, "dislike")
+        like = Bugurt.manager.like(user, bugurt_id, "dislike")
         if like:
             result.update({"message": "Хуита",
                            "post": bugurt_id,

@@ -2,6 +2,7 @@
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.db import models
+from django.shortcuts import get_object_or_404
 
 class CustomUser(models.Model):
     user = models.OneToOneField(User, unique=True)
@@ -54,62 +55,37 @@ class Proof(models.Model):
     def __unicode__(self):
         return self.link
 
-class Bugurt(models.Model):
-    name = models.CharField(max_length=100, verbose_name=u"Заголовок")
-    text = models.TextField(max_length=10000, verbose_name=u"Текст")
-    date = models.DateTimeField(auto_now=True)
-    likes = models.IntegerField(max_length=10, blank=True, default=0)
-    author = models.ForeignKey(User)
-    tags = models.ManyToManyField(Tag, through="BugurtTags", blank=True)
-    proofs = models.ManyToManyField(Proof, through="BugurtProofs")
-    comments = models.ManyToManyField("Comments", related_name="bugurtcomments", blank=True)
+class BugurtManager(models.Manager):
+    def all(self):
+        return self.get_query_set().order_by("-date")
 
-    class Meta:
-        verbose_name = u"Бугурт"
-        verbose_name_plural = u"Бугурты"
-        ordering = ("-date",)
-
-    def __unicode__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return u"/bugurts/%s/" % self.name
-
-    @classmethod
-    def all(cls):
-        return cls.objects.order_by("-date")
-
-    @classmethod
-    def get_by_name(cls, name):
-        result = cls.objects.filter(name=name)
+    def get_by_name(self, name):
+        result = self.get_query_set().filter(name=name)
         if result:
             return result[0]
         else:
-            return False
+            return None
 
-    @classmethod
-    def get_by_author(cls, username):
-        result = cls.objects.filter(author=User.objects.get(username=username))
+    def get_by_author(self, username):
+        result = self.get_query_set().filter(author=User.objects.get(username=username))
         if result:
             return result
         else:
-            return False
+            return None
 
-    @classmethod
-    def get_by_tag(cls, tag):
+    def get_by_tag(self, tag):
         tag_id = Tag.objects.get(title=tag)
-        result = cls.objects.filter(tags=tag_id)
+        result = self.get_query_set().filter(tags=tag_id)
         return result
 
-    @classmethod
-    def like(cls, user, bugurt, type):
+    def like(self, user, bugurt, type):
         if Like.objects.filter(user_id=user).filter(bugurt_id=bugurt):
             return False
         else:
             Like.objects.create(bugurt_id=Bugurt.objects.get(id=bugurt),
                                 user_id=user,
                                 type=type)
-            bugurt_obj = cls.objects.get(id=bugurt)
+            bugurt_obj = self.get_query_set().get(id=bugurt)
             if type == "like":
                 bugurt_obj.likes += 1
                 bugurt_obj.save()
@@ -118,21 +94,18 @@ class Bugurt(models.Model):
                 bugurt_obj.save()
         return bugurt_obj.likes
 
-    @classmethod
-    def top(cls):
-        return cls.objects.order_by("-likes").order_by("-comments")[:10]
+    def top(self):
+        return self.get_query_set().order_by("-likes").order_by("-comments")[:10]
 
-    @classmethod
-    def latest(cls):
-        return cls.objects.order_by("-id")[:10]
+    def latest(self):
+        return self.get_query_set().order_by("-id")[:10]
 
-    @classmethod
-    def create_bugurt(cls, form, user):
+    def create_bugurt(self, form, user):
         prepare = lambda string, type: string[type].replace(" ,", ",").replace(", ", ",").split(",")
         data = form.data
         tag_names = prepare(data, "tags")
         bugurt_links = prepare(data, "proofs")
-        bugurt = cls.objects.create(name=data["name"],
+        bugurt = self.get_query_set().create(name=data["name"],
             author=user,
             text=data["text"])
         for name in tag_names:
@@ -145,6 +118,29 @@ class Bugurt(models.Model):
                 bugurt.bugurtproofs_set.create(bugurt=bugurt, proof=p)
         bugurt.save()
 
+class Bugurt(models.Model):
+    name = models.CharField(max_length=100, verbose_name=u"Заголовок")
+    text = models.TextField(max_length=10000, verbose_name=u"Текст")
+    date = models.DateTimeField(auto_now=True)
+    likes = models.IntegerField(max_length=10, blank=True, default=0)
+    author = models.ForeignKey(User)
+    tags = models.ManyToManyField(Tag, through="BugurtTags", blank=True)
+    proofs = models.ManyToManyField(Proof, through="BugurtProofs")
+    comments = models.ManyToManyField("Comments", related_name="buburtcomments", blank=True)
+    objects = models.Manager()
+    manager = BugurtManager()
+
+    class Meta:
+        verbose_name = u"Бугурт"
+        verbose_name_plural = u"Бугурты"
+        ordering = ("-date",)
+        get_latest_by = "date"
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return u"/bugurts/%s/" % self.name
 
 class BugurtTags(models.Model):
     bugurt = models.ForeignKey(Bugurt)

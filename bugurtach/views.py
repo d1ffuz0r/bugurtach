@@ -11,8 +11,8 @@ from decorators import render_to
 @render_to("home.html")
 def homepage(request):
     return {"tags": Tag.all(),
-            "top_bugurts": Bugurt.top(),
-            "latest_bugurts": Bugurt.latest(),
+            "top_bugurts": Bugurt.manager.all(),
+            "latest_bugurts": Bugurt.manager.latest(),
             "latest_comments": Comments.latest_comments()}
 
 @login_required(login_url="/login/")
@@ -47,7 +47,7 @@ def registration(request):
 
 @render_to("bugurts/bugurts.html")
 def all_bugurts(request):
-    return {"bugurts": Bugurt.all()}
+    return {"bugurts": Bugurt.manager.all()}
 
 @login_required(login_url="/login/")
 @render_to("bugurts/add.html")
@@ -56,7 +56,7 @@ def add_bugurt(request):
     if request.method == "POST":
         form = AddBugurt(request.POST, initial={"author": user})
         if form.is_valid():
-            Bugurt.create_bugurt(form=form, user=user)
+            Bugurt.manager.create_bugurt(form=form, user=user)
             return HttpResponseRedirect("/user/%s/" % user)
     else:
         form = AddBugurt()
@@ -65,7 +65,7 @@ def add_bugurt(request):
 @login_required(login_url="/login/")
 @render_to("bugurts/edit.html")
 def edit_bugurt(request, name):
-    bugurt = Bugurt.get_by_name(name)
+    bugurt = Bugurt.manager.get_by_name(name)
     if request.user.username == bugurt.author.username:
         if request.POST:
             edit_form = EditBugurt(request.POST)
@@ -85,7 +85,7 @@ def edit_bugurt(request, name):
 
 @login_required(login_url="/login/")
 def delete_bugurt(request, name):
-    bugurt = Bugurt.get_by_name(name)
+    bugurt = Bugurt.manager.get_by_name(name)
     if request.user.username == bugurt.author.username:
         bugurt.delete()
         return HttpResponseRedirect("/user/%s/" % request.user)
@@ -94,7 +94,7 @@ def delete_bugurt(request, name):
 
 @render_to("bugurts/view.html")
 def view_bugurt(request, bugurt):
-    bugurt_obj = Bugurt.get_by_name(bugurt)
+    bugurt_obj = Bugurt.manager.get_by_name(bugurt)
     if bugurt_obj:
         return {"bugurt": bugurt_obj}
     else:
@@ -102,7 +102,7 @@ def view_bugurt(request, bugurt):
 
 @render_to("bugurts/bugurts.html")
 def view_user(request, username):
-    bugurt_objects = Bugurt.get_by_author(username)
+    bugurt_objects = Bugurt.manager.get_by_author(username)
     if bugurt_objects:
         return {"bugurts": bugurt_objects}
     else:
@@ -110,7 +110,7 @@ def view_user(request, username):
 
 @render_to("bugurts/bugurts.html")
 def view_tags(request, tag):
-    return {"bugurts": Bugurt.get_by_tag(tag)}
+    return {"bugurts": Bugurt.manager.get_by_tag(tag)}
 
 @render_to("tags.html")
 def view_all_tags(request):
