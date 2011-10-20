@@ -81,7 +81,7 @@ def delete_tag(request):
     bugurt = request.POST["bugurt"]
     tag = request.POST["tag"]
     BugurtTags.objects.filter(bugurt=bugurt, tag=tag).delete()
-    return {"bugurt": bugurt, "tag": tag}
+    #return {"bugurt": bugurt, "tag": tag}
 
 @render_json
 @check_ajax
@@ -111,11 +111,11 @@ def delete_proof(request):
     bugurt = request.POST["bugurt"]
     proof = request.POST["proof"]
     BugurtProofs.objects.filter(bugurt=bugurt, proof=proof).delete()
-    return {"bugurt": bugurt, "proof": proof}
+    #return {"bugurt": bugurt, "proof": proof}
 
 @check_ajax
 def autocomplite(request):
-    result = ''
+    result = ""
     text = escape(request.POST["text"])
     tags = Tag.objects.filter(title__contains=text)
     for tag in tags:

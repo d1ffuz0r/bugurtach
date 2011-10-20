@@ -142,6 +142,9 @@ class TestViews(TestCase):
         self.user = User.objects.create_user(username="root1",
                                              email="test@email.com",
                                              password="root")
+        self.user1 = User.objects.create_user(username="d1ffuz0r",
+                                             email="test@email.com",
+                                             password="root")
         self.bugurt = Bugurt.objects.create(name="test",
                                         text="testtest",
                                         author=self.user)
@@ -167,6 +170,24 @@ class TestViews(TestCase):
         self.client.post("/login/", {"username": "root1", "password": "root"})
         request = self.client.get("/bugurts/test/delete/")
         self.assertContains(request, text="", status_code=302)
+
+    def test_add_bugurt(self):
+        self.client.post("/login/", {"username": "root1", "password": "root"})
+        request = self.client.get("/bugurts/add/")
+        request1 = self.client.post("/bugurts/add", {"text": "test",
+                                                    "name": "test",
+                                                    "author": 1,
+                                                    "tags": "first, two, three",
+                                                    "proofs": "googlem yandes, rambler"})
+        self.assertContains(request, text="author")
+        self.assertRedirects(request1, expected_url="/user/root1/")
+
+    def test_edit_bugurt(self):
+        self.client.post("/login/", {"username": "root1", "password": "root"})
+        request = self.client.get("/bugurts/test/edit/")
+        request1 = self.client.post("/bugurts/test/edit/", {"name": "text", "text": "text"})
+        self.assertContains(request, text="text")
+        self.assertRedirects(request1, expected_url="/bugurts/text/")
 
     def test_all_bugurts(self):
         request = self.client.get("/bugurts/")
