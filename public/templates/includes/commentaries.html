@@ -1,16 +1,8 @@
 {% load comment_tags %}
-<div id="commentaries">
-    <h3>Комментарии:</h3>
-    {% comments_bugurt bugurt %}
-    <ul id="comments">
-    {% if comments %}
-            {% for comment in comments %}
-                <li id="comment{{ comment.id }}" class="reply">
-                    <div>#{{ comment.id }} {{ comment.author }} {{ comment.date|date:"d.m.y, H:m" }}</div>
-                    {{ comment.text }}
-                </li>
-            {% endfor %}
-    {% endif %}
-    </ul>
-    {% include 'comments/form.html' %}
-</div>
+      <div id="commentaries">
+        <h3>Комментарии:</h3>
+        {% comments_bugurt bugurt %}<ul id="comments">
+          {% if comments %}{% for comment in comments %}<li id="comment{{ comment.id }}" class="reply">
+            <div>#{{ comment.id }} {{ comment.author }} {{ comment.date|date:"d.m.y, H:m" }}</div>{{ comment.text }}
+          </li>{% endfor %}
+        {% else %}Комметариев нет{% endif %}</ul>{% include 'comments/form.html' %}</div>

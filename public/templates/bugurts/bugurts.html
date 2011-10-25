@@ -1,28 +1,13 @@
-{% extends "base.html" %}
-{% block content %}
-    {% csrf_token %}
-    {% if bugurts %}
-        {% for bugurt in bugurts %}
-            <div class="box1">
-                <div class="box-title">
-                    <h3><a href="/bugurts/{{ bugurt.name }}/">{{ bugurt.name }}</a> :: {{ bugurt.date|date:'' }} :: <a href="#">{{ bugurt.author }}</a>{% include 'includes/likes.html' %}</h3>
-                </div>
-                <div class="box-title">{{ bugurt.text|escape|truncatewords:20 }}</div>
-                <div class="tags">
-                    {% if bugurt.tags.count %}
-                        <div>Теги:
-                            {% for tag in bugurt.tags.all %}
-                                <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="view-full">
-                    <a href="/bugurts/{{ bugurt.name }}/" class="links">Полностью</a>
-                </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <h2 class="title"><a>Not bugurts</a></h2>
-    {% endif %}
-{% endblock %}
+{% extends "base.html" %}{% block content %}{% if bugurts %}{% for bugurt in bugurts %}
+      <div class="box1">
+        <div class="box-title">
+          <h3><a href="/bugurts/{{ bugurt.name }}/">{{ bugurt.name }}</a> :: {{ bugurt.date|date:'' }} :: <a href="#">{{ bugurt.author }}</a>{% include 'includes/likes.html' %}</h3>
+        </div>
+        <div class="box-title">{{ bugurt.text|escape|truncatewords:20 }}</div>
+        <div class="tags">{% if bugurt.tags.count %}
+          <div>Теги: {% for tag in bugurt.tags.all %}<a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a> {% endfor %}</div>
+        {% endif %}</div>
+        <div class="view-full">
+          <a href="/bugurts/{{ bugurt.name }}/" class="links">Полностью</a>
+        </div>
+      </div>{% endfor %}{% else %}<h2 class="title"><a>Not bugurts</a></h2>{% endif %}{% endblock %}

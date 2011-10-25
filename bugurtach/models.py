@@ -86,37 +86,19 @@ class BugurtManager(models.Manager):
                                 user_id=user,
                                 type=type)
             bugurt_obj = self.get_query_set().get(id=bugurt)
-            if type == "like":
+            if type == "1":
                 bugurt_obj.likes += 1
                 bugurt_obj.save()
-            if type == "dislike":
+            if type == "0":
                 bugurt_obj.likes -= 1
                 bugurt_obj.save()
         return bugurt_obj.likes
 
     def top(self):
-        return self.get_query_set().order_by("-likes").order_by("-comments")[:10]
+        return self.get_query_set().order_by("-likes","-comments")[:10]
 
     def latest(self):
         return self.get_query_set().order_by("-id")[:10]
-
-    def create_bugurt(self, form, user):
-        prepare = lambda string, type: string[type].replace(" ,", ",").replace(", ", ",").split(",")
-        data = form.data
-        tag_names = prepare(data, "tags")
-        bugurt_links = prepare(data, "proofs")
-        bugurt = self.get_query_set().create(name=data["name"],
-            author=user,
-            text=data["text"])
-        for name in tag_names:
-            if name is not "":
-                t, created = Tag.objects.get_or_create(title=name)
-                bugurt.bugurttags_set.create(bugurt=bugurt, tag=t)
-        for link in bugurt_links:
-            if link is not "":
-                p, created = Proof.objects.get_or_create(link=link)
-                bugurt.bugurtproofs_set.create(bugurt=bugurt, proof=p)
-        bugurt.save()
 
 class Bugurt(models.Model):
     name = models.CharField(max_length=100, verbose_name=u"Заголовок")
@@ -165,9 +147,11 @@ class BugurtProofs(models.Model):
         return self.proof.link
 
 class Like(models.Model):
+    CHOISES = (("1", "like"),
+               ("0", "dislike"))
     user_id = models.ForeignKey(User)
     bugurt_id = models.ForeignKey(Bugurt)
-    type = models.CharField(max_length=10, blank=False)
+    type = models.CharField(max_length=20, choices=CHOISES)
 
     class Meta:
         verbose_name = u"Голос"

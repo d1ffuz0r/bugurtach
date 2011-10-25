@@ -1,15 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="box1">
+      <div class="box1">
         <div class="box-title"><h3>Теги</h3></div>
-    </div>
-    {% for tag in tags %}
-        <div class="box1">
-            <div class="box-title">
-                <h3>
-                    <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
-                </h3>
-            </div>
+      </div>
+      {% for tag in tags %}<div class="box1">
+        <div class="box-title">
+          <h3><a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a></h3>
         </div>
-    {% endfor %}
-{% endblock %}
+      </div>{% endfor %}
+    {% endblock %}

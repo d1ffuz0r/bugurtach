@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from bugurtach.models import *
 
 class CustomUserAdmin(admin.ModelAdmin):
@@ -33,3 +34,4 @@ admin.site.register(Proof, ProofAdmin)
 admin.site.register(BugurtTags, BugurtTagsAdmin)
 admin.site.register(BugurtProofs, BugurtProofsAdmin)
 admin.site.register(Comments, CommentsAdmin)
+admin.site.unregister(Group)

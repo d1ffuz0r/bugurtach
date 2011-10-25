@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from bugurtach.models import Bugurt
+from bugurtach.models import Bugurt, Tag, Proof
 from django import forms
 
 class AddBugurt(forms.ModelForm):
@@ -11,6 +11,35 @@ class AddBugurt(forms.ModelForm):
             "text": forms.Textarea({"required": True}),
             "author": forms.HiddenInput()
         }
+
+    def clean(self):
+        tags = self.data["tags"]
+        proofs = self.data["proofs"]
+        if not tags:
+            raise forms.ValidationError("Enter tags")
+        if not proofs:
+            raise forms.ValidationError("Enter proofs")
+        self.cleaned_data["tags"] = tags
+        self.cleaned_data["proofs"] = proofs
+        return self.cleaned_data
+
+    def save(self, commit=True):
+        data = self.cleaned_data
+        super(AddBugurt, self).save()
+        prepare = lambda string: string.replace(" ,", ",").replace(", ", ",").split(",")
+        tags = set(prepare(data["tags"]))
+        proofs = set(prepare(data["proofs"]))
+        if tags and proofs:
+            bugurt = Bugurt.objects.get(pk=self.instance.pk)
+            for name in tags:
+                if name is not "":
+                    t, created = Tag.objects.get_or_create(title=name)
+                    bugurt.bugurttags_set.create(bugurt=bugurt, tag=t)
+            for link in proofs:
+                if link is not "":
+                    p, created = Proof.objects.get_or_create(link=link)
+                    bugurt.bugurtproofs_set.create(bugurt=bugurt, proof=p)
+
 
 class EditBugurt(forms.ModelForm):
     class Meta:

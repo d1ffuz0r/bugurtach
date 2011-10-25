@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from ajax.views import like, add_comment, add_tag, delete_tag, add_proof, delete_proof, reply, autocomplite
 from bugurtach.views import homepage, user_settings, registration, add_bugurt, edit_bugurt, view_bugurt, all_bugurts, \
-    delete_bugurt, view_user, view_tags, view_all_tags
+    delete_bugurt, view_user, view_tags, view_all_tags, top_bugurts
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
 
@@ -16,7 +16,8 @@ urlpatterns = patterns("",
     url(r"^logout/", logout, {"next_page": "/"}),
     url(r"^registration/", registration),
     url(r"^settings/", user_settings),
-    url(r"^bugurts/add", add_bugurt),
+    url(r"^bugurts/top/", top_bugurts),
+    url(r"^bugurts/add/", add_bugurt),
     url(r"^bugurts/(.*?)/edit/", edit_bugurt),
     url(r"^bugurts/(.*?)/delete/", delete_bugurt),
     url(r"^bugurts/(.*?)/", view_bugurt),

@@ -1,8 +1,1 @@
-<span style="float: right;">
-{% csrf_token %}
-<!--<div class="like" id="{{ bugurt.id }}" title="Охуенно"></div>
-<div class="dislike" id="{{ bugurt.id }}" title="Хуита"></div>-->
-<div class="like" id="{{ bugurt.id }}" title="Охуенно"></div>
-<div class="dislike" id="{{ bugurt.id }}" title="Хуита"></div>
-Рейтинг: <span id="likes_{{ bugurt.id }}">{{ bugurt.likes }}</span>
-</span>
+<span style="float: right;">{% csrf_token %}<div class="like" id="{{ bugurt.id }}" title="Охуенно"></div><div class="dislike" id="{{ bugurt.id }}" title="Хуита"></div>Рейтинг: <span id="likes_{{ bugurt.id }}">{{ bugurt.likes }}</span></span>

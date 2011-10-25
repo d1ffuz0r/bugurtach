@@ -11,7 +11,7 @@ from decorators import render_to
 @render_to("home.html")
 def homepage(request):
     return {"tags": Tag.all(),
-            "top_bugurts": Bugurt.manager.all(),
+            "top_bugurts": Bugurt.manager.top(),
             "latest_bugurts": Bugurt.manager.latest(),
             "latest_comments": Comments.latest_comments()}
 
@@ -22,8 +22,8 @@ def user_settings(request):
     if request.POST:
         form_password = PasswordChangeForm(request.user, request.POST)
         if form_password.is_valid():
+            msg = True
             form_password.save()
-            msg = "СХОРОНИЛ!"
     else:
         form_password = PasswordChangeForm(request.user)
     return {"form_password": form_password,
@@ -35,10 +35,8 @@ def registration(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            user = authenticate(
-                username=form.cleaned_data["username"],
-                password=form.cleaned_data["password1"]
-            )
+            user = authenticate(username=form.cleaned_data["username"],
+                                password=form.cleaned_data["password1"])
             login(request, user)
             return HttpResponseRedirect("/")
     else:
@@ -49,14 +47,18 @@ def registration(request):
 def all_bugurts(request):
     return {"bugurts": Bugurt.manager.all()}
 
+@render_to("bugurts/bugurts.html")
+def top_bugurts(self):
+    return {"bugurts": Bugurt.manager.top()}
+
 @login_required(login_url="/login/")
 @render_to("bugurts/add.html")
 def add_bugurt(request):
     user = request.user
     if request.method == "POST":
-        form = AddBugurt(request.POST, initial={"author": user})
+        form = AddBugurt(request.POST)
         if form.is_valid():
-            Bugurt.manager.create_bugurt(form=form, user=user)
+            form.save()
             return HttpResponseRedirect("/user/%s/" % user)
     else:
         form = AddBugurt()
@@ -98,7 +100,7 @@ def view_bugurt(request, bugurt):
     if bugurt_obj:
         return {"bugurt": bugurt_obj}
     else:
-        raise Http404
+        return {"bugurt": ""}
 
 @render_to("bugurts/bugurts.html")
 def view_user(request, username):
@@ -106,7 +108,7 @@ def view_user(request, username):
     if bugurt_objects:
         return {"bugurts": bugurt_objects}
     else:
-        return Http404
+        return {"bugurts": ""}
 
 @render_to("bugurts/bugurts.html")
 def view_tags(request, tag):

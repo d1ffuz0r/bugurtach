@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from bugurtach.models import Tag, Proof, CustomUser, Bugurt, BugurtTags, Like, Comments, BugurtProofs
 from django.contrib.auth.models import User
@@ -52,18 +53,6 @@ class TestModels(TestCase):
     def test_customuser_absolute_url(self):
         self.assertEqual(self.cuser.get_absolute_url(), u"/user/root1/")
 
-    class data(object):
-        data = {"tags": "first, two, three",
-                "proofs": "google, yandex, rambler",
-                "name": "test",
-                "text": "message"}
-
-    def test_create_bugurt(self):
-        self.assertIsNone(Bugurt.manager.create_bugurt(
-            form=self.data,
-            user=self.user
-        ))
-
     def test_bugurt_equal(self):
         self.assertEqual(self.bugurt.__unicode__(), "test")
 
@@ -98,12 +87,12 @@ class TestModels(TestCase):
         self.assertEqual(self.bugurt.get_absolute_url(), u"/bugurts/test/")
 
     def test_bugurt_like(self):
-        self.assertTrue(Bugurt.manager.like(self.user, self.bugurt.id ,"like"))
-        self.assertFalse(Bugurt.manager.like(self.user, self.bugurt.id ,"like"))
+        self.assertTrue(Bugurt.manager.like(self.user, self.bugurt.id ,"1"))
+        self.assertFalse(Bugurt.manager.like(self.user, self.bugurt.id ,"1"))
 
     def test_bugurt_dislike(self):
-        self.assertTrue(Bugurt.manager.like(self.user, self.bugurt.id ,"dislike"))
-        self.assertFalse(Bugurt.manager.like(self.user, self.bugurt.id ,"dislike"))
+        self.assertTrue(Bugurt.manager.like(self.user, self.bugurt.id ,"0"))
+        self.assertFalse(Bugurt.manager.like(self.user, self.bugurt.id ,"0"))
 
     def test_bugurttags(self):
         self.assertEqual(self.bugurttag.__unicode__(), "test")
@@ -112,11 +101,11 @@ class TestModels(TestCase):
         self.assertEqual(self.bugurtproof.__unicode__(), "google.com")
 
     def test_like(self):
-        self.assertTrue(Bugurt.manager.like(self.user, self.bugurt.id ,"like"))
+        self.assertTrue(Bugurt.manager.like(self.user, self.bugurt.id ,"1"))
         self.assertEqual(Like.objects.get(bugurt_id=self.bugurt.id).__unicode__(), "root1 : test")
 
     def test_dislike(self):
-        self.assertTrue(Bugurt.manager.like(self.user, self.bugurt.id ,"like"))
+        self.assertTrue(Bugurt.manager.like(self.user, self.bugurt.id ,"0"))
         self.assertNotEqual(Like.objects.get(bugurt_id=self.bugurt.id).__unicode__(), "root1 : test2")
 
     def test_comment(self):
@@ -146,8 +135,8 @@ class TestViews(TestCase):
                                              email="test@email.com",
                                              password="root")
         self.bugurt = Bugurt.objects.create(name="test",
-                                        text="testtest",
-                                        author=self.user)
+                                            text="testtest",
+                                            author=self.user)
         self.tag = Tag.objects.create(title="test")
 
     def test_home(self):
@@ -166,54 +155,110 @@ class TestViews(TestCase):
         request = self.client.post("/registration/", {"username": "roo", "password1": "roo", "password2": "roo1"})
         self.assertContains(request, text="<!DOCTYPE html>")
 
-    def test_delete_bugurt(self):
+    def test_add_bugurt(self):
+        self.client.post("/login/", {"username": "root1", "password": "root"})
+        request = self.client.get("/bugurts/add/")
+        self.assertContains(request, text="author")
+
+    def test_delete_bugurt_true(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
         request = self.client.get("/bugurts/test/delete/")
         self.assertContains(request, text="", status_code=302)
 
-    def test_add_bugurt(self):
+    def test_delete_bugurt_false(self):
+        self.client.post("/login/", {"username": "d1ffuz0r", "password": "root"})
+        request = self.client.get("/bugurts/test/delete/")
+        self.assertRedirects(request, expected_url="/")
+
+    def test_add_bugurt_true(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
-        request = self.client.get("/bugurts/add/")
-        request1 = self.client.post("/bugurts/add", {"text": "test",
+        request = self.client.post("/bugurts/add/", {"text": "test",
                                                     "name": "test",
                                                     "author": 1,
                                                     "tags": "first, two, three",
-                                                    "proofs": "googlem yandes, rambler"})
-        self.assertContains(request, text="author")
-        self.assertRedirects(request1, expected_url="/user/root1/")
+                                                    "proofs": "googlem, yandes, rambler"})
+        self.assertRedirects(request, expected_url="/user/root1/")
+
+    def test_add_bugurt_tags_fail(self):
+        self.client.post("/login/", {"username": "root1", "password": "root"})
+        request = self.client.post("/bugurts/add/", {"text": "test",
+                                                    "name": "test",
+                                                    "author": 1,
+                                                    "tags": "",
+                                                    "proofs": "googlem, yandes, rambler"})
+        self.assertContains(request, text="Enter tags")
+
+    def test_add_bugurt_proofs_fail(self):
+        self.client.post("/login/", {"username": "root1", "password": "root"})
+        request = self.client.post("/bugurts/add/", {"text": "test",
+                                                    "name": "test",
+                                                    "author": 1,
+                                                    "tags": "first, two, three",
+                                                    "proofs": ""})
+        self.assertContains(request, text="Enter proofs")
+
 
     def test_edit_bugurt(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
         request = self.client.get("/bugurts/test/edit/")
-        request1 = self.client.post("/bugurts/test/edit/", {"name": "text", "text": "text"})
         self.assertContains(request, text="text")
-        self.assertRedirects(request1, expected_url="/bugurts/text/")
+
+    def test_edit_bugurt_true(self):
+        self.client.post("/login/", {"username": "root1", "password": "root"})
+        request = self.client.post("/bugurts/test/edit/", {"name": "text", "text": "text"})
+        self.assertRedirects(request, expected_url="/bugurts/text/")
+
+    def test_edit_bugurt_false(self):
+        self.client.post("/login/", {"username": "d1ffuz0r", "password": "root"})
+        request = self.client.get("/bugurts/test/edit/")
+        self.assertRedirects(request, expected_url="/bugurts/test/")
 
     def test_all_bugurts(self):
         request = self.client.get("/bugurts/")
         self.assertContains(request, text="<!DOCTYPE html>")
 
-    def test_view_not_bugurt(self):
-        request = self.client.get("/bugurts/test/")
+    def test_top_bugurts(self):
+        request = self.client.get("/bugurts/top/")
         self.assertContains(request, text="<!DOCTYPE html>")
+
+    def test_view_bugurt(self):
+        request = self.client.get("/bugurts/test/")
+        self.assertContains(request, text="test")
+
+    def test_view_bugurt_none(self):
+        request = self.client.get("/bugurts/test1/")
+        self.assertContains(request, text="Not bugurt")
 
     def test_view_user(self):
         request = self.client.get("/user/root1/")
         self.assertContains(request, text="<!DOCTYPE html>")
 
+    def test_view_user_none(self):
+        request = self.client.get("/user/d1ffuz0r/")
+        self.assertContains(request, text="Not bugurts")
+
     def test_user_login_true(self):
         request = self.client.post("/login/", {"username": "root1", "password": "root"})
         self.assertContains(request, text="", status_code=302)
 
-    def test_user_settings_true(self):
+    def test_user_settings(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
         request = self.client.get("/settings/")
-        self.assertContains(request, text="<!DOCTYPE html>")
-        request1 = self.client.post("/settings/", {"old_password": "root1",
+        self.assertContains(request, text="Сменить пароль")
+
+    def test_user_settings_true(self):
+        self.client.post("/login/", {"username": "root1", "password": "root"})
+        request1 = self.client.post("/settings/", {"old_password": "root",
                                                   "new_password1": "roo",
                                                   "new_password2": "roo" })
-        self.assertContains(request1, text="<!DOCTYPE html>")
+        self.assertContains(request1, text="Сохранено")
 
+    def test_user_settings_false(self):
+        self.client.post("/login/", {"username": "root1", "password": "root"})
+        request1 = self.client.post("/settings/", {"old_password": "root",
+                                                  "new_password1": "roo",
+                                                  "new_password2": "" })
+        self.assertContains(request1, text="This field is required.")
     def test_user_logout(self):
         request = self.client.get("/logout/")
         self.assertContains(request, text="", status_code=302)

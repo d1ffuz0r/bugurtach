@@ -1,58 +1,28 @@
-{% extends "base.html" %}
-{% block content %}
-    <div id="home-logo" class="box1">
+{% extends "base.html" %}{% block content %}
+      <div id="home-logo" class="box1">
         <div><a href="/"><img src="{{ STATIC_URL }}images/front-logo.png" alt=""></a></div>
-    </div>
-    <div class="box1 home_l">
+      </div>
+      <div class="box1 home_l">
         <div class="box-title"><h3><a href="/bugurts/">Новые бугурты</a></h3></div>
-        <ul id="newbugg" style="margin-left: 20px;">
-            {% if latest_bugurts %}
-                {% for bugurt in latest_bugurts %}
-                    <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a
-                            href="/user/{{ bugurt.author }}/">{{ bugurt.author }}</a></li>
-                {% endfor %}
-            {% else %}
-                <li><a>Нет бугуртов</a></li>
-            {% endif %}
+        <ul id="newbugg" style="margin-left: 20px;">{% if latest_bugurts %}{% for bugurt in latest_bugurts %}
+          <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a href="/user/{{ bugurt.author }}/">{{ bugurt.author }}</a></li>{% endfor %}{% else %}<li><a>Нет бугуртов</a></li>{% endif %}
         </ul>
-    </div>
-    <div class="box1 home_r">
-        <div class="box-title"><h3><a>Лютый WIN</a></h3></div>
-        <ul style="margin-left: 20px;">
-            {% if top_bugurts %}
-                {% for bugurt in top_bugurts %}
-                    <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a
-                            href="/user/{{ bugurt.author }}/">{{ bugurt.author }}</a> {{ bugurt.likes }}</li>
-                {% endfor %}
-            {% else %}
-                <li><a>Нет бугуртов</a></li>
-            {% endif %}
-        </ul>
-    </div>
-    <div class="box1 home_l">
+      </div>
+      <div class="box1 home_r">
+        <div class="box-title"><h3><a href="/bugurts/top/">Лютый WIN</a></h3></div>
+        <ul style="margin-left: 20px;">{% if top_bugurts %}{% for bugurt in top_bugurts %}
+          <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a href="/user/{{ bugurt.author }}/">{{ bugurt.author }}</a> {{ bugurt.likes }}</li>{% endfor %}
+        {% else %}<li><a>Нет бугуртов</a></li>{% endif %}</ul>
+      </div>
+      <div class="box1 home_l">
         <div class="box-title"><h3><a>Комментарии</a></h3></div>
-        <ul style="margin-left: 20px; overflow: hidden;">
-            {% if latest_comments %}
-                {% for comment in latest_comments %}
-                    <li><a href="/user/{{ comment.author }}/">{{ comment.author }}</a>: <a
-                            href="{{ comment.bugurt.get_absolute_url }}#comment{{ comment.id }}">{{ comment.text|truncatewords:40 }}</a>
-                    </li>
-                {% endfor %}
-            {% else %}
-                <li><a>Нет комментариев</a></li>
-            {% endif %}
+        <ul style="margin-left: 20px; overflow: hidden;">{% if latest_comments %}{% for comment in latest_comments %}
+          <li><a href="/user/{{ comment.author }}/">{{ comment.author }}</a>: <a href="{{ comment.bugurt.get_absolute_url }}#comment{{ comment.id }}">{{ comment.text|truncatewords:40 }}</a></li>{% endfor %}{% else %}<li><a>Нет комментариев</a></li>{% endif %}
         </ul>
-    </div>
-    <div class="box1 home_r">
+      </div>
+      <div class="box1 home_r">
         <div class="box-title"><h3><a href="/tags/">Теги</a></h3></div>
-        <ul style="margin-left: 20px; overflow: hidden;">
-            {% if tags %}
-                {% for tag in tags %}
-                    <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
-                {% endfor %}
-            {% else %}
-                <li><a>Нет тегов</a></li>
-            {% endif %}
-        </ul>
-    </div>
-{% endblock %}
+        <ul style="margin-left: 20px; overflow: hidden;">{% if tags %}{% for tag in tags %} <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>{% endfor %}
+        {% else %}<li><a>Нет тегов</a></li>{% endif %}</ul>
+      </div>
+    {% endblock %}

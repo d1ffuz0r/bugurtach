@@ -16,7 +16,7 @@ def like(request):
     bugurt_id = request.POST["bugurt_id"]
     type = request.POST["type"]
     if type == "like":
-        like = Bugurt.manager.like(user, bugurt_id, "like")
+        like = Bugurt.manager.like(user, bugurt_id, "1")
         if like:
             result.update({"message": "Охуенно!",
                            "post": bugurt_id,
@@ -24,7 +24,7 @@ def like(request):
         else:
             result.update({"message": "Вы уже голосовали за этот бугурт"})
     if type == "dislike":
-        like = Bugurt.manager.like(user, bugurt_id, "dislike")
+        like = Bugurt.manager.like(user, bugurt_id, "0")
         if like:
             result.update({"message": "Хуита",
                            "post": bugurt_id,
@@ -39,7 +39,7 @@ def add_comment(request):
     result = {}
     if request.POST["text"]:
         comment, created = Comments.objects.get_or_create(author=request.user,
-                                                          bugurt=Bugurt.objects.get(id=request.POST["bugurt"]),
+                                                          bugurt=Bugurt.objects.get(pk=request.POST["bugurt"]),
                                                           text=request.POST["text"])
         if created:
             result.update({"comment": {"id": comment.id,
@@ -80,8 +80,9 @@ def add_tag(request):
 def delete_tag(request):
     bugurt = request.POST["bugurt"]
     tag = request.POST["tag"]
-    BugurtTags.objects.filter(bugurt=bugurt, tag=tag).delete()
-    #return {"bugurt": bugurt, "tag": tag}
+    if tag and bugurt:
+        BugurtTags.objects.filter(bugurt=bugurt, tag=tag).delete()
+        return {"bugurt": bugurt, "tag": tag}
 
 @render_json
 @check_ajax
@@ -111,7 +112,7 @@ def delete_proof(request):
     bugurt = request.POST["bugurt"]
     proof = request.POST["proof"]
     BugurtProofs.objects.filter(bugurt=bugurt, proof=proof).delete()
-    #return {"bugurt": bugurt, "proof": proof}
+    return {"bugurt": bugurt, "proof": proof}
 
 @check_ajax
 def autocomplite(request):

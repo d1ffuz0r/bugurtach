@@ -1,40 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="box1" id="edit-bugurt">
+      <div class="box1" id="edit-bugurt">
         <div class="box-title">
-            <h3>Редактировать бугурт</h3>
+          <h3>Редактировать бугурт</h3>
         </div>
         <div class="edit">
-            <input id="bugurt" value="{{ bugurt.id }}" style="display: none;"/>
-            <form action="" method="POST">
-                <div>
-                {% csrf_token %}
-                {{ edit_form.as_p }}
-                </div>
-                {% if bugurt.tags %}
-                <div>
-                    <div class="box-title"><h3>Теги</h3></div>
-                    <ul id="tags">
-                        {% for tag in bugurt.tags.all %}
-                            <li id="tag_{{ tag.id }}"><a>{{ tag.title }}</a>: <span id="{{ tag.id }}" class="delete_tag">удалить</span></li>
-                        {% endfor %}
-                    </ul>
-                    <div class="add-form">{{ tag_add }} <span class="add_tag">Добавить тег</span></div>
-                </div>
-                {% endif %}
-                {% if bugurt.proofs %}
-                <div>
-                    <div class="box-title"><h3>Пруфы</h3></div>
-                    <ul id="proofs">
-                        {% for proof in bugurt.proofs.all %}
-                            <li id="proof_{{ proof.id }}"><a>{{ proof.link }}</a>: <span id="{{ proof.id }}" class="delete_proof">удалить</span></li>
-                        {% endfor %}
-                    </ul>
-                    <div class="add-form">{{ proof_add }} <span class="add_proof">Добавить пруф</span></div>
-                </div>
-                {% endif %}
-                <p class="add-form save"><input type="submit" value="Сохранить"></p>
-            </form>
+          <input id="bugurt" value="{{ bugurt.id }}" style="display: none;"/>
+          <form action="" method="POST">
+            <div>
+              {% csrf_token %}
+              {{ edit_form.as_p }}
+            </div>
+            {% if bugurt.tags %}<div>
+              <div class="box-title"><h3>Теги</h3></div>
+              <ul id="tags">
+                {% for tag in bugurt.tags.all %}<li id="tag_{{ tag.id }}"><a>{{ tag.title }}</a>: <span id="{{ tag.id }}" class="delete_tag">удалить</span></li>{% endfor %}
+              </ul>
+              <div class="add-form">
+                {{ tag_add.as_p }} <span class="add_tag">Добавить тег</span>
+              </div>
+            </div>{% endif %}{% if bugurt.proofs %}
+            <div>
+              <div class="box-title"><h3>Пруфы</h3></div>
+              <ul id="proofs">{% for proof in bugurt.proofs.all %}
+                <li id="proof_{{ proof.id }}"><a>{{ proof.link }}</a>: <span id="{{ proof.id }}" class="delete_proof">удалить</span></li>{% endfor %}
+              </ul>
+              <div class="add-form">
+                {{ proof_add.as_p }}
+                <span class="add_proof">Добавить пруф</span>
+              </div>
+            </div>{% endif %}
+            <p class="add-form save"><input type="submit" value="Сохранить"></p>
+          </form>
         </div>
-    </div>
-{% endblock %}
+      </div>
+    {% endblock %}

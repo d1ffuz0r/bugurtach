@@ -1,32 +1,19 @@
-{% extends 'base.html' %}
-{% block content %}
-    <div class="box1">
-        <div class="box-title"><h3>{{ bugurt.name }} :: {{ bugurt.date|date:'' }}
-            {% ifequal bugurt.author.id user.id %}<a href="{{ bugurt.absolute_url }}edit/">Редактировать</a> | <a href="{{ bugurt.absolute_url }}delete/">Удалить</a>{% endifequal %}
-            {% include 'includes/likes.html' %}
-        </h3></div>
-        <div class="cont">
-            {{ bugurt.text|escape }}
+{% extends 'base.html' %}{% block content %}{% if bugurt %}
+      <div class="box1">
+        <div class="box-title">
+          <h3>{{ bugurt.name }} :: {{ bugurt.date|date:'' }} {% ifequal bugurt.author.id user.id %}<a href="{{ bugurt.absolute_url }}edit/">Редактировать</a> | <a href="{{ bugurt.absolute_url }}delete/">Удалить</a>{% endifequal %}{% include 'includes/likes.html' %}</h3>
         </div>
-        {% if bugurt.proofs %}
-            <div class="proofs">
-                Пруфы:
-                {% if bugurt.proofs.count %}
-                    {% for proof in bugurt.proofs.all %}
-                        <a href="http://{{ proof.link }}" target="_blank">{{ proof.link }}</a>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        {% endif %}
-        {% if bugurt.tags %}
-            <div class="tags">
-                <div>Теги:
-                    {% for tag in bugurt.tags.all %}
-                        <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
-    </div>
-    {% include 'includes/commentaries.html' %}
-{% endblock %}
+        <div class="cont">
+          {{ bugurt.text|escape }}
+        </div>
+        {% if bugurt.proofs %}<div class="proofs"> Пруфы:  {% for proof in bugurt.proofs.all %}
+          <a href="http://{{ proof.link }}" target="_blank">{{ proof.link }}</a>
+        {% endfor %}</div>{% endif %}
+        {% if bugurt.tags %}<div class="tags">
+          <div>Теги:  {% for tag in bugurt.tags.all %}
+            <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
+          {% endfor %}</div>
+        </div>{% endif %}
+      </div>{% include 'includes/commentaries.html' %}{% else %}Not bugurts
+    {% endif %}
+    {% endblock %}
