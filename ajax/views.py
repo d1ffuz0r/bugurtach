@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from bugurtach.models import Bugurt, Comments, BugurtTags, Tag, Proof, BugurtProofs
-from decorators import render_json, check_ajax
 from django.http import HttpResponse
 from django.utils.html import escape
+from decorators import render_json, check_ajax
+from bugurtach.models import Bugurt, Comments, BugurtTags, Tag, Proof, BugurtProofs
 
 def reply(request):
     random_reply = Comments.objects.order_by('?')[0].text

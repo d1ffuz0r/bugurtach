@@ -14,6 +14,22 @@
             <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
           {% endfor %}</div>
         </div>{% endif %}
-      </div>{% include 'includes/commentaries.html' %}{% else %}Not bugurts
+      </div>
+    <div id="commentaries">
+      <h3>Комментарии:</h3>
+      <ul id="comments">
+        {% if bugurt.bugurtcomments %}{% for comment in bugurt.bugurtcomments.all %}<li id="comment{{ comment.id }}" class="reply">
+          <div>#{{ comment.id }} {{ comment.author }} {{ comment.date|date:"d.m.y, H:m" }}</div>{{ comment.text }}
+        </li>{% endfor %}
+      {% else %}Комметариев нет{% endif %}</ul>
+        {% if user.is_authenticated %}
+                <form action="/ajax/post_comment/" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" id="bugurt" value="{{ bugurt.id }}">
+                  <p><label for="text">Комментарий</label><br /><textarea id="text" rows="10" cols="60"></textarea></p>
+                </form>
+                <button id="add_post">Ответить</button>
+              {% endif %}</div>
+    {% else %}Not bugurt
     {% endif %}
     {% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from bugurtach.models import *
+from bugurtach.models import Bugurt, CustomUser, Like, Tag, Proof, BugurtTags, BugurtProofs, Comments
 
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ("user", )

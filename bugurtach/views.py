@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from bugurtach.models import Tag, Comments, Bugurt
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from bugurtach.forms import EditBugurt, AddTag, AddProof, AddBugurt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, Http404
+from bugurtach.models import Tag, Comments, Bugurt
+from bugurtach.forms import EditBugurt, AddTag, AddProof, AddBugurt
 from decorators import render_to
 
 

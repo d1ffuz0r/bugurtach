@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from django.core.exceptions import ValidationError
 from django.test import TestCase
-from bugurtach.models import Tag, Proof, CustomUser, Bugurt, BugurtTags, Like, Comments, BugurtProofs
-from django.contrib.auth.models import User
 from django.test.client import Client
+from django.contrib.auth.models import User
+from bugurtach.models import Tag, Proof, CustomUser, Bugurt, BugurtTags, Like, Comments, BugurtProofs
 from ajax.tests import TestAjaxForms
 
 class TestModels(TestCase):

@@ -1,8 +1,8 @@
-from bugurtach.models import Bugurt, Comments
-from django.contrib.auth.models import User
-from django.test.client import Client
-from django.test import TestCase
 from datetime import datetime
+from django.test import TestCase
+from django.test.client import Client
+from django.contrib.auth.models import User
+from bugurtach.models import Bugurt, Comments
 
 class TestAjaxForms(TestCase):
 
@@ -80,9 +80,9 @@ class TestAjaxForms(TestCase):
         self.client.post("/login/", {"username": "root1", "password": "root"})
         self.client.post("/ajax/add_tag/",{"bugurt": 1, "tag": "tag1"},
                                 **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
-        print self.client.post("/ajax/delete_tag/", {"bugurt": 1, "tag": "tag1"},
-                                   **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
-        #self.assertEqual(request, "null")
+        request = self.client.post("/ajax/delete_tag/",{"bugurt": 1, "tag": "tag1"},
+                                           **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
+        self.assertContains(request, text="null")
 
     def test_add_proof(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
@@ -108,7 +108,7 @@ class TestAjaxForms(TestCase):
                                 **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
         request = self.client.post("/ajax/delete_proof/",{"bugurt": 1, "proof": "proof1"},
                                    **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
-        self.assertEqual(request.content, "null")
+        self.assertContains(request, text="null")
 
     def test_autocomplite(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
