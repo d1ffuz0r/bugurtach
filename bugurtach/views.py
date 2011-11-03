@@ -2,7 +2,7 @@
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from bugurtach.models import Tag, Comments, Bugurt
 from bugurtach.forms import EditBugurt, AddTag, AddProof, AddBugurt
 from decorators import render_to
@@ -48,7 +48,7 @@ def all_bugurts(request):
     return {"bugurts": Bugurt.manager.all()}
 
 @render_to("bugurts/bugurts.html")
-def top_bugurts(self):
+def top_bugurts(request):
     return {"bugurts": Bugurt.manager.top()}
 
 @login_required(login_url="/login/")
@@ -108,7 +108,7 @@ def view_user(request, username):
     if bugurt_objects:
         return {"bugurts": bugurt_objects}
     else:
-        return {"bugurts": ""}
+        return {"bugurts": None}
 
 @render_to("bugurts/bugurts.html")
 def view_tags(request, tag):

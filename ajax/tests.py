@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
 from django.test import TestCase
 from django.test.client import Client
@@ -56,8 +57,8 @@ class TestAjaxForms(TestCase):
         request2 = self.client.post("/ajax/add_comment/", {"bugurt": 1, "text": ""},
                                 **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
         self.assertContains(request, text='{"comment": {"date": "%s", "text": "test1", "id": 2, "author": "root1"}}' % datetime.now().strftime("%d.%m.%y, %H:%M"))
-        self.assertContains(request1, text='{"message": "Already exist"}')
-        self.assertContains(request2, text='{"message": "Enter message please"}')
+        self.assertContains(request1, text='{"message": "\u0423\u0436\u0435 \u0435\u0441\u0442\u044c"}')
+        self.assertContains(request2, text='{"message": "\u041d\u0430\u043f\u0438\u0448\u0438 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435"}')
 
     def test_add_tag(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
@@ -68,13 +69,13 @@ class TestAjaxForms(TestCase):
         request2 = self.client.post("/ajax/add_tag/", {"bugurt": 1, "tag": ""},
                                 **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
         self.assertContains(request, text='{"tag": "tag1", "id": 1}')
-        self.assertContains(request1, text='{"message": "Already exist"}')
-        self.assertContains(request2, text='{"message": "Enter name tag please"}')
+        self.assertContains(request1, text='{"message": "\u0423\u0436\u0435 \u0435\u0441\u0442\u044c"}')
+        self.assertContains(request2, text='{"message": "\u0412\u0432\u0435\u0434\u0438 \u0442\u0435\u0433"}')
         self.client.logout()
         self.client.post("/login/", {"username": "d1ffuz0r", "password": "root"})
         request3 = self.client.post("/ajax/add_tag/", {"bugurt": 1, "tag": "tag1"},
                                     **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
-        self.assertContains(request3, text='{"message": "4itak dohuya?"}')
+        self.assertContains(request3, text='{"message": "\u0427\u0438\u0442\u0430\u043a \u0451\u043f\u0442\u0430?"}')
 
     def test_delete_tag(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
@@ -93,13 +94,13 @@ class TestAjaxForms(TestCase):
         request2 = self.client.post("/ajax/add_proof/",{"bugurt": 1, "proof": ""},
                                 **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
         self.assertContains(request, text='{"id": 1, "proof": "proof1"}')
-        self.assertContains(request1, text='{"message": "Already exist"}')
-        self.assertContains(request2, text='{"message": "Enter name proof please"}')
+        self.assertContains(request1, text='{"message": "\u0423\u0436\u0435 \u0435\u0441\u0442\u044c"}')
+        self.assertContains(request2, text='{"message": "\u0412\u0432\u0435\u0434\u0438 \u043f\u0440\u0443\u0444"}')
         self.client.logout()
         self.client.post("/login/", {"username": "d1ffuz0r", "password": "root"})
         request3 = self.client.post("/ajax/add_proof/",{"bugurt": 1, "proof": "proof1"},
                                     **{'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'})
-        self.assertContains(request3, text='{"message": "4itak dohuya?"}')
+        self.assertContains(request3, text='{"message": "\u0427\u0438\u0442\u0430\u043a \u0451\u043f\u0442\u0430?"}')
 
 
     def test_delete_proof(self):

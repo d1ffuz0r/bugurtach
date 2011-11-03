@@ -16,9 +16,9 @@ class AddBugurt(forms.ModelForm):
         tags = self.data["tags"]
         proofs = self.data["proofs"]
         if not tags:
-            raise forms.ValidationError("Enter tags")
+            raise forms.ValidationError("Введи тег(и)")
         if not proofs:
-            raise forms.ValidationError("Enter proofs")
+            raise forms.ValidationError("Введи пруф(ы)")
         self.cleaned_data["tags"] = tags
         self.cleaned_data["proofs"] = proofs
         return self.cleaned_data
@@ -39,6 +39,7 @@ class AddBugurt(forms.ModelForm):
                 if link is not "":
                     p, created = Proof.objects.get_or_create(link=link)
                     bugurt.bugurtproofs_set.create(bugurt=bugurt, proof=p)
+        return data
 
 
 class EditBugurt(forms.ModelForm):

@@ -2,7 +2,6 @@
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.db import models
-from django.shortcuts import get_object_or_404
 
 class CustomUser(models.Model):
     user = models.OneToOneField(User, unique=True)

@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
       <div class="box1">
-        <div class="box-title"><h3>Настройки</h3></div>
+        <div class="box-title"><h3>Настройки :: Сменить пароль</h3></div>
         <div class="settings">
-          <h2>Сменить пароль</h2>{% if msg %}Сохранено{% endif %}
+          {% if msg %}Сохранено{% endif %}
           <form action="" method="POST">
             {% csrf_token %}
             {{ form_password.as_p }}
-            <input type="submit" value="Сменить">
+            <p><input type="submit" value="Сменить"></p>
           </form>
         </div>
       </div>

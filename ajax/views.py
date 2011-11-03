@@ -48,19 +48,18 @@ def add_comment(request):
                                        "date": comment.date.strftime("%d.%m.%y, %H:%M")}})
             comment.save()
         else:
-            result.update({"message": "Already exist"})
+            result.update({"message": "Уже есть"})
     else:
-        result.update({"message":"Enter message please"})
+        result.update({"message":"Напиши сообщение"})
     return result
 
 @render_json
 @check_ajax
 def add_tag(request):
     result = {}
-    bugurt = request.POST["bugurt"]
     tag = escape(request.POST["tag"])
     if tag:
-        bugurt_obj = Bugurt.objects.get(id=bugurt)
+        bugurt_obj = Bugurt.objects.get(id=request.POST["bugurt"])
         if bugurt_obj.author.username == request.user.username:
             t, created = Tag.objects.get_or_create(title=tag)
             btag = BugurtTags.objects.filter(bugurt=bugurt_obj, tag=t)
@@ -68,11 +67,11 @@ def add_tag(request):
                 BugurtTags(bugurt=bugurt_obj, tag=t).save()
                 result.update({"tag": t.title, "id": t.id})
             else:
-                result.update({"message": "Already exist"})
+                result.update({"message": "Уже есть"})
         else:
-            result.update({"message":"4itak dohuya?"})
+            result.update({"message":"Читак ёпта?"})
     else:
-        result.update({"message":"Enter name tag please"})
+        result.update({"message":"Введи тег"})
     return result
 
 @render_json
@@ -88,10 +87,9 @@ def delete_tag(request):
 @check_ajax
 def add_proof(request):
     result = {}
-    bugurt = request.POST["bugurt"]
     proof = escape(request.POST["proof"])
     if proof:
-        bugurt_obj = Bugurt.objects.get(id=bugurt)
+        bugurt_obj = Bugurt.objects.get(id=request.POST["bugurt"])
         if bugurt_obj.author.username == request.user.username:
             p, created = Proof.objects.get_or_create(link=proof)
             bproof = BugurtProofs.objects.filter(bugurt=bugurt_obj, proof=p)
@@ -99,11 +97,11 @@ def add_proof(request):
                 BugurtProofs(bugurt=bugurt_obj, proof=p).save()
                 result.update({"proof": p.link, "id": p.id})
             else:
-                result.update({"message": "Already exist"})
+                result.update({"message": "Уже есть"})
         else:
-            result.update({"message":"4itak dohuya?"})
+            result.update({"message":"Читак ёпта?"})
     else:
-        result.update({"message":"Enter name proof please"})
+        result.update({"message":"Введи пруф"})
     return result
 
 @render_json

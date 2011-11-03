@@ -185,7 +185,7 @@ class TestViews(TestCase):
                                                     "author": 1,
                                                     "tags": "",
                                                     "proofs": "googlem, yandes, rambler"})
-        self.assertContains(request, text="Enter tags")
+        self.assertContains(request, text="Введи тег(и)")
 
     def test_add_bugurt_proofs_fail(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
@@ -194,7 +194,7 @@ class TestViews(TestCase):
                                                     "author": 1,
                                                     "tags": "first, two, three",
                                                     "proofs": ""})
-        self.assertContains(request, text="Enter proofs")
+        self.assertContains(request, text="Введи пруф(ы)")
 
 
     def test_edit_bugurt(self):

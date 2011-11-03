@@ -4,9 +4,9 @@
         <div class="box-title"><h3>Доставить бугурт</h3></div>
         <div class="add-bugurt">
           <form action="/bugurts/add/" method="POST">
-            <p>{% csrf_token %}</p>
+            {% csrf_token %}
             {{ add_form.as_p }}
-            <input type="hidden" value="{{ user.id }}" name="author">
+            <p><input type="hidden" value="{{ user.id }}" name="author"></p>
             <p><label for="tags">Теги:</label><input title="разделять через запятую" type="text" id="tags" name="tags"></p>
             <p><label for="proofs">Пруфы:</label><input  type="text"  title="разделять через запятую" id="proofs" name="proofs"></p>
             <p><input type="submit" value="Доставить"></p>

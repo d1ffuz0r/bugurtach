@@ -33,7 +33,7 @@ a:hover {
     color: rgb(0, 134, 207);
 }
 
-#header {
+header {
     height: 90px;
     margin-bottom: 10px;
 }
@@ -54,7 +54,7 @@ a:hover {
     width: 400px;
 }
 
-#links {
+nav {
     padding-top: 10px;
     float: right;
 }
@@ -99,8 +99,14 @@ a:hover {
     font-size: 15px;
     padding: 1px 12px 1px 12px;
 }
-
-.box1 .cont, .box1 .tags, .box1 .view-full, .box1 .proofs, .box1 .login-form, .box1 .reg-form, .box1 .add-bugurt, .box1 .settings, .box1 .edit {
+.box1 .add-bugurt{
+    float: left;
+}
+.box1 .cont, .box1 .tags,
+.box1 .view-full, .box1 .proofs,
+.box1 .login-form, .box1 .reg-form,
+.box1 .add-bugurt, .box1 .settings,
+.box1 .edit {
     margin: 10px;
 }
 .add-bugurt p{
@@ -114,6 +120,9 @@ a:hover {
 .add-bugurt input, .add-bugurt textarea{
     width: 500px;
     float: right;
+}
+.add-bugurt input[type=submit]{
+    width: 100px;
 }
 .box1 .view-full {
     text-align: right;
@@ -227,6 +236,9 @@ a:hover {
     float: left;
     width: 100%;
 }
+.edit div .box-title{
+    width: 876px;
+}
 .edit ul{
     float: left;
 }
@@ -241,5 +253,30 @@ a:hover {
     margin: 10px 0 0 0;
     text-align: right;
 }
-.delete_tag, .delete_proof, .add_tag, .add_proof{cursor: pointer;}
-.delete_tag:hover, .delete_proof:hover, .add_tag:hover, .add_proof:hover {color: red;}
+.delete_tag,
+.delete_proof,
+.add_tag,
+.add_proof{cursor: pointer;}
+
+.delete_tag:hover,
+.delete_proof:hover,
+.add_tag:hover,
+.add_proof:hover {color: red;}
+
+.settings{
+    float: left;
+}
+.settings form{
+    float: left;
+}
+.settings form p{
+    float: left;
+    margin-bottom: 5px;
+    width: 450px;
+}
+.settings form p label{
+    float: left;
+}
+.settings form p input{
+    float: right;
+}

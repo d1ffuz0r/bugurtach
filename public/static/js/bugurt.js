@@ -59,8 +59,8 @@ $(document).ready(function($) {
                     alert(data.message);
                 }
                 else{
-                    var c = data.comment;
-                    $('#comments').append('<li id="comment'+c.id+'" class="reply"><div>#'+c.id+' '+c.author+' '+c.date+'</div><div>'+c.text+'</div></li>');
+                    var comment = data.comment;
+                    $('#comments').append('<li id="comment'+comment.id+'" class="reply"><div>#'+comment.id+' '+comment.author+' '+comment.date+'</div><div>'+comment.text+'</div></li>');
                 }
             }
         });
