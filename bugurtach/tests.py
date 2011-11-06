@@ -187,6 +187,15 @@ class TestViews(TestCase):
                                                     "proofs": "googlem, yandes, rambler"})
         self.assertContains(request, text="Введи тег(и)")
 
+    def test_add_bugurt_tags_fail_whitespaces(self):
+        self.client.post("/login/", {"username": "root1", "password": "root"})
+        request = self.client.post("/bugurts/add/", {"text": "test",
+                                                    "name": "test",
+                                                    "author": 1,
+                                                    "tags": "  ,  ",
+                                                    "proofs": ", "})
+        self.assertContains(request, text="Введи тег(и)")
+
     def test_add_bugurt_proofs_fail(self):
         self.client.post("/login/", {"username": "root1", "password": "root"})
         request = self.client.post("/bugurts/add/", {"text": "test",

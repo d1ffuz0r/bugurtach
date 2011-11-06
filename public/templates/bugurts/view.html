@@ -6,10 +6,10 @@
         <div class="cont">
           {{ bugurt.text|escape }}
         </div>
-        {% if bugurt.proofs %}<div class="proofs"> Пруфы:  {% for proof in bugurt.proofs.all %}
+        {% if bugurt.proofs.count %}<div class="proofs"> Пруфы:  {% for proof in bugurt.proofs.all %}
           <a href="http://{{ proof.link }}" target="_blank">{{ proof.link }}</a>
         {% endfor %}</div>{% endif %}
-        {% if bugurt.tags %}<div class="tags">
+        {% if bugurt.tags.count %}<div class="tags">
           <div>Теги:  {% for tag in bugurt.tags.all %}
             <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
           {% endfor %}</div>

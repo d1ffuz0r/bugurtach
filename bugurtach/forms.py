@@ -2,6 +2,8 @@
 from bugurtach.models import Bugurt, Tag, Proof
 from django import forms
 
+prepare = lambda string: filter(lambda val: val != u'', string.replace(" ","").split(","))
+
 class AddBugurt(forms.ModelForm):
     class Meta:
         model = Bugurt
@@ -13,8 +15,8 @@ class AddBugurt(forms.ModelForm):
         }
 
     def clean(self):
-        tags = self.data["tags"]
-        proofs = self.data["proofs"]
+        tags = set(prepare(self.data["tags"]))
+        proofs = set(prepare(self.data["proofs"]))
         if not tags:
             raise forms.ValidationError("Введи тег(и)")
         if not proofs:
@@ -26,17 +28,16 @@ class AddBugurt(forms.ModelForm):
     def save(self, commit=True):
         data = self.cleaned_data
         super(AddBugurt, self).save()
-        prepare = lambda string: string.replace(" ,", ",").replace(", ", ",").split(",")
-        tags = set(prepare(data["tags"]))
-        proofs = set(prepare(data["proofs"]))
+
+        tags = data["tags"]
+        proofs = data["proofs"]
+
         if tags and proofs:
             bugurt = Bugurt.objects.get(pk=self.instance.pk)
             for name in tags:
-                if name is not "":
                     t, created = Tag.objects.get_or_create(title=name)
                     bugurt.bugurttags_set.create(bugurt=bugurt, tag=t)
             for link in proofs:
-                if link is not "":
                     p, created = Proof.objects.get_or_create(link=link)
                     bugurt.bugurtproofs_set.create(bugurt=bugurt, proof=p)
         return data
