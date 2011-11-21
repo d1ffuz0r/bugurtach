@@ -128,9 +128,11 @@ nav {
     text-align: right;
 }
 
-.login-form .error, .reg-form .error,.errorlist {
+.login-form .error, .reg-form .error, .errorlist {
+    float: left;
     color: #ff0000;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 #login {
