@@ -142,6 +142,41 @@ class TestModels(TestCase):
         self.bugurtproof.delete()
 
 
+class TestFeeds(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username="root1",
+                                             email="test@email.com",
+                                             password="root")
+        self.tag = Tag.objects.create(title="test")
+
+        self.bugurt = Bugurt.objects.create(name="test",
+                                            text="testtest",
+                                            author=self.user)
+        self.bugurttag = BugurtTags.objects.create(
+            bugurt=self.bugurt,
+            tag=self.tag
+        )
+
+    def test_rss_user(self):
+        request = self.client.get("/user/root1/rss/")
+        self.assertContains(request,
+                            text=u"Bugurtach.tk. Cамые сочные бугурты")
+
+    def test_rss_tag(self):
+        request = self.client.get("/tags/test/rss/")
+        self.assertContains(request,
+                            text=u"Bugurtach.tk. Cамые сочные бугурты")
+
+    def test_rss_not_user(self):
+        request = self.client.get("/tags/test1/rss/")
+        self.assertContains(request, text="", status_code=404)
+
+    def test_rss_not_tag(self):
+        request = self.client.get("/user/test1/rss/")
+        self.assertContains(request, text="", status_code=404)
+
+
 class TestViews(TestCase):
     def setUp(self):
         self.client = Client()
