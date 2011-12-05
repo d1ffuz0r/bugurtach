@@ -15,6 +15,7 @@ def homepage(request):
             "latest_bugurts": Bugurt.manager.latest(),
             "latest_comments": Comments.latest_comments()}
 
+
 @login_required(login_url="/login/")
 @render_to("settings.html")
 def user_settings(request):
@@ -28,6 +29,7 @@ def user_settings(request):
         form_password = PasswordChangeForm(request.user)
     return {"form_password": form_password,
             "msg": msg}
+
 
 @render_to("registration/registration.html")
 def registration(request):
@@ -43,13 +45,16 @@ def registration(request):
         form = UserCreationForm
     return {"reg_form": form}
 
+
 @render_to("bugurts/bugurts.html")
 def all_bugurts(request):
     return {"bugurts": Bugurt.manager.all()}
 
+
 @render_to("bugurts/bugurts.html")
 def top_bugurts(request):
     return {"bugurts": Bugurt.manager.top()}
+
 
 @login_required(login_url="/login/")
 @render_to("bugurts/add.html")
@@ -64,6 +69,7 @@ def add_bugurt(request):
         form = AddBugurt()
     return {"add_form": form}
 
+
 @login_required(login_url="/login/")
 @render_to("bugurts/edit.html")
 def edit_bugurt(request, name):
@@ -77,13 +83,16 @@ def edit_bugurt(request, name):
                 bugurt.save()
                 return HttpResponseRedirect(bugurt.get_absolute_url())
         else:
-            edit_form = EditBugurt(initial={"name": bugurt.name, "text": bugurt.text})
+            edit_form = EditBugurt(
+                initial={"name": bugurt.name, "text": bugurt.text}
+            )
         return {"edit_form": edit_form,
                 "bugurt": bugurt,
                 "tag_add": AddTag(),
                 "proof_add": AddProof()}
     else:
         return HttpResponseRedirect(bugurt.get_absolute_url())
+
 
 @login_required(login_url="/login/")
 def delete_bugurt(request, name):
@@ -94,6 +103,7 @@ def delete_bugurt(request, name):
     else:
         return HttpResponseRedirect("/")
 
+
 @render_to("bugurts/view.html")
 def view_bugurt(request, bugurt):
     bugurt_obj = Bugurt.manager.get_by_name(bugurt)
@@ -101,6 +111,7 @@ def view_bugurt(request, bugurt):
         return {"bugurt": bugurt_obj}
     else:
         return {"bugurt": ""}
+
 
 @render_to("bugurts/bugurts.html")
 def view_user(request, username):
@@ -110,9 +121,11 @@ def view_user(request, username):
     else:
         return {"bugurts": None}
 
+
 @render_to("bugurts/bugurts.html")
 def view_tags(request, tag):
     return {"bugurts": Bugurt.manager.get_by_tag(tag)}
+
 
 @render_to("tags.html")
 def view_all_tags(request):

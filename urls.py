@@ -1,9 +1,11 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
-from ajax.views import like, add_comment, add_tag, delete_tag, add_proof, delete_proof, reply, autocomplite
-from bugurtach.views import homepage, user_settings, registration, add_bugurt, edit_bugurt, view_bugurt, all_bugurts,\
-    delete_bugurt, view_user, view_tags, view_all_tags, top_bugurts
+from ajax.views import like, add_comment, add_tag, delete_tag, \
+    add_proof, delete_proof, reply, autocomplite
+from bugurtach.views import homepage, user_settings, registration,\
+    add_bugurt, edit_bugurt, view_bugurt, all_bugurts, delete_bugurt,\
+    view_user, view_tags, view_all_tags, top_bugurts
 
 import settings
 
@@ -27,10 +29,10 @@ urlpatterns = patterns("",
     url(r"^tags/", view_all_tags),
     url(r"^media/(?P<path>.*)$",
         "django.views.static.serve",
-            {"document_root": settings.MEDIA_ROOT}), #FIX: need after nginx
+            {"document_root": settings.MEDIA_ROOT}),
     url(r"^static/(?P<path>.*)$",
         "django.views.static.serve",
-            {"document_root": settings.STATIC_ROOT}), #FIX: need after nginx
+            {"document_root": settings.STATIC_ROOT}),
 )
 
 ajax = patterns("",

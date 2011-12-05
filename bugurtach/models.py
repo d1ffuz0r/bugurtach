@@ -3,6 +3,7 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.db import models
 
+
 class CustomUser(models.Model):
     user = models.OneToOneField(User, unique=True)
     bugurts = models.ManyToManyField("Bugurt", blank=True)
@@ -19,13 +20,17 @@ class CustomUser(models.Model):
     def __unicode__(self):
         return self.user.username
 
+
 def create_profile(**kwargs):
     user = kwargs["instance"]
     if kwargs["created"]:
         profile = CustomUser(user=user)
         profile.save()
 
-post_save.connect(create_profile, sender=User, dispatch_uid="users-profilecreation-signal")
+post_save.connect(create_profile,
+                  sender=User,
+                  dispatch_uid="users-profilecreation-signal")
+
 
 class Tag(models.Model):
     title = models.CharField(max_length=100)
@@ -44,6 +49,7 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.title
 
+
 class Proof(models.Model):
     link = models.CharField(max_length=500)
 
@@ -53,6 +59,7 @@ class Proof(models.Model):
 
     def __unicode__(self):
         return self.link
+
 
 class BugurtManager(models.Manager):
     def all(self):
@@ -66,7 +73,9 @@ class BugurtManager(models.Manager):
             return None
 
     def get_by_author(self, username):
-        result = self.get_query_set().filter(author=User.objects.get(username=username))
+        result = self.get_query_set().filter(
+            author=User.objects.get(username=username)
+        )
         if result:
             return result
         else:
@@ -94,10 +103,11 @@ class BugurtManager(models.Manager):
         return bugurt_obj.likes
 
     def top(self):
-        return self.get_query_set().order_by("-likes","-comments")[:10]
+        return self.get_query_set().order_by("-likes", "-comments")[:10]
 
     def latest(self):
         return self.get_query_set().order_by("-id")[:10]
+
 
 class Bugurt(models.Model):
     name = models.CharField(max_length=100, verbose_name=u"Заголовок")
@@ -107,7 +117,9 @@ class Bugurt(models.Model):
     author = models.ForeignKey(User)
     tags = models.ManyToManyField(Tag, through="BugurtTags", blank=True)
     proofs = models.ManyToManyField(Proof, through="BugurtProofs")
-    comments = models.ManyToManyField("Comments", related_name="buburtcomments", blank=True)
+    comments = models.ManyToManyField("Comments",
+        related_name="buburtcomments",
+        blank=True)
     objects = models.Manager()
     manager = BugurtManager()
 
@@ -123,6 +135,7 @@ class Bugurt(models.Model):
     def get_absolute_url(self):
         return u"/bugurts/%s/" % self.name
 
+
 class BugurtTags(models.Model):
     bugurt = models.ForeignKey(Bugurt)
     tag = models.ForeignKey(Tag)
@@ -134,6 +147,7 @@ class BugurtTags(models.Model):
     def __unicode__(self):
         return self.tag.title
 
+
 class BugurtProofs(models.Model):
     bugurt = models.ForeignKey(Bugurt)
     proof = models.ForeignKey(Proof)
@@ -144,6 +158,7 @@ class BugurtProofs(models.Model):
 
     def __unicode__(self):
         return self.proof.link
+
 
 class Like(models.Model):
     CHOISES = (("1", "like"),
@@ -159,8 +174,9 @@ class Like(models.Model):
     def __unicode__(self):
         return "%s : %s" % (self.user_id.username, self.bugurt_id.name)
 
+
 class Comments(models.Model):
-    author  = models.ForeignKey(User)
+    author = models.ForeignKey(User)
     bugurt = models.ForeignKey(Bugurt, related_name="bugurtcomments")
     date = models.DateTimeField(auto_now=True)
     text = models.TextField(max_length=1000)

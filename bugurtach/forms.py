@@ -2,7 +2,11 @@
 from bugurtach.models import Bugurt, Tag, Proof
 from django import forms
 
-prepare = lambda string: filter(lambda val: val != u'', string.replace(" ","").split(","))
+
+prepare = lambda string: filter(
+    lambda val: val != u'', string.replace(" ", "").split(",")
+)
+
 
 class AddBugurt(forms.ModelForm):
     class Meta:
@@ -48,12 +52,21 @@ class EditBugurt(forms.ModelForm):
         model = Bugurt
         fields = ("name", "text")
         widgets = {
-            "name": forms.TextInput(attrs={"style":"margin-bottom:10px;", "size":77}),
-            "text": forms.Textarea(attrs={"style":"margin-left:42px;", "cols":60, "rows": 20}),
+            "name": forms.TextInput(attrs={"style": "margin-bottom:10px;",
+                                           "size": 77}),
+            "text": forms.Textarea(attrs={"style": "margin-left:42px;",
+                                          "cols": 60,
+                                          "rows": 20}),
         }
 
+
 class AddTag(forms.Form):
-    title = forms.CharField(label="", widget=forms.TextInput(attrs={"title": "Одно название тега"}))
+    title = forms.CharField(label="", widget=forms.TextInput(
+        attrs={"title": "Одно название тега"})
+    )
+
 
 class AddProof(forms.Form):
-    link = forms.CharField(label="", widget=forms.TextInput(attrs={"title": "Один линк пруфа"}))
+    link = forms.CharField(label="", widget=forms.TextInput(
+        attrs={"title": "Один линк пруфа"})
+    )
