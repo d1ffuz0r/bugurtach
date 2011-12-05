@@ -4,7 +4,7 @@
           <h3>{{ bugurt.name }} :: {{ bugurt.date|date:'' }} {% ifequal bugurt.author.id user.id %}<a href="{{ bugurt.absolute_url }}edit/">Редактировать</a> | <a href="{{ bugurt.absolute_url }}delete/">Удалить</a>{% endifequal %}{% include 'includes/likes.html' %}</h3>
         </div>
         <div class="cont">
-          {{ bugurt.text|escape }}
+          {{ bugurt.text|escape|linebreaksbr }}
         </div>
         {% if bugurt.proofs.count %}<div class="proofs"> Пруфы:  {% for proof in bugurt.proofs.all %}
           <a href="http://{{ proof.link }}" target="_blank">{{ proof.link }}</a>
