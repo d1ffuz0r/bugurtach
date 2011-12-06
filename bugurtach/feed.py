@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from django.contrib.syndication.views import Feed
 from django.shortcuts import get_object_or_404
 from bugurtach.models import Bugurt, User, Tag
@@ -49,3 +48,20 @@ class TagFeed(Feed):
 
     def items(self, obj):
         return Bugurt.objects.filter(tags=obj).all()[:10]
+
+
+class BugurtsFeed(Feed):
+    title = u"Bugurtach.tk. Cамые сочные бугурты"
+    link = u"/bugurts/"
+
+    def items(self):
+        return Bugurt.objects.all()[:10]
+
+    def item_title(self, item):
+        return item.name
+
+    def item_link(self, item):
+        return item.get_absolute_url()
+
+    def item_description(self, item):
+        return item.text

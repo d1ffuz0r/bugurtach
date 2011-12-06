@@ -169,11 +169,11 @@ class TestFeeds(TestCase):
                             text=u"Bugurtach.tk. Cамые сочные бугурты")
 
     def test_rss_not_user(self):
-        request = self.client.get("/tags/test1/rss/")
+        request = self.client.get("/tags/test111/rss/")
         self.assertContains(request, text="", status_code=404)
 
     def test_rss_not_tag(self):
-        request = self.client.get("/user/test1/rss/")
+        request = self.client.get("/user/test111/rss/")
         self.assertContains(request, text="", status_code=404)
 
 

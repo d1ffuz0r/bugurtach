@@ -108,7 +108,8 @@ def delete_bugurt(request, name):
 def view_bugurt(request, bugurt):
     bugurt_obj = Bugurt.manager.get_by_name(bugurt)
     if bugurt_obj:
-        return {"bugurt": bugurt_obj}
+        return {"bugurt": bugurt_obj,
+                "rss_link": "/user/%s/rss/" % bugurt_obj.author}
     else:
         return {"bugurt": ""}
 
@@ -117,14 +118,16 @@ def view_bugurt(request, bugurt):
 def view_user(request, username):
     bugurt_objects = Bugurt.manager.get_by_author(username)
     if bugurt_objects:
-        return {"bugurts": bugurt_objects}
+        return {"bugurts": bugurt_objects,
+                "rss_link": "/user/%s/rss/" % username}
     else:
         return {"bugurts": None}
 
 
 @render_to("bugurts/bugurts.html")
 def view_tags(request, tag):
-    return {"bugurts": Bugurt.manager.get_by_tag(tag)}
+    return {"bugurts": Bugurt.manager.get_by_tag(tag),
+            "rss_link": "/tags/%s/rss/" % tag}
 
 
 @render_to("tags.html")

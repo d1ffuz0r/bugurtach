@@ -6,7 +6,7 @@ from ajax.views import like, add_comment, add_tag, delete_tag, \
 from bugurtach.views import homepage, user_settings, registration,\
     add_bugurt, edit_bugurt, view_bugurt, all_bugurts, delete_bugurt,\
     view_user, view_tags, view_all_tags, top_bugurts
-from bugurtach.feed import UserFeed, TagFeed
+from bugurtach.feed import UserFeed, TagFeed, BugurtsFeed
 
 import settings
 
@@ -15,6 +15,7 @@ admin.autodiscover()
 urlpatterns = patterns("",
     url(r"^user/(.*?)/rss/$", UserFeed()),
     url(r"^tags/(.*?)/rss/$", TagFeed()),
+    url(r"^bugurts/rss/$", BugurtsFeed()),
     url(r"^$", homepage),
     url(r"^admin/$", include(admin.site.urls)),
     url(r"^login/$", login, {"redirect_field_name": "next_url"}),

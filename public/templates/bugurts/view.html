@@ -1,7 +1,7 @@
-{% extends 'base.html' %}{% block content %}{% if bugurt %}
+{% extends 'base.html' %}{% block rss %}{{ rss_link }}{% endblock %}{% block content %}{% if bugurt %}
       <div class="box1">
         <div class="box-title">
-          <h3>{{ bugurt.name }} :: {{ bugurt.date|date:'' }} {% ifequal bugurt.author.id user.id %}<a href="{{ bugurt.absolute_url }}edit/">Редактировать</a> | <a href="{{ bugurt.absolute_url }}delete/">Удалить</a>{% endifequal %}{% include 'includes/likes.html' %}</h3>
+          <h3>{{ bugurt.name }} :: {{ bugurt.date|date:'' }} :: {{ bugurt.author }} {% ifequal bugurt.author.id user.id %}<a href="{{ bugurt.absolute_url }}edit/">Редактировать</a> | <a href="{{ bugurt.absolute_url }}delete/">Удалить</a>{% endifequal %}{% include 'includes/likes.html' %}</h3>
         </div>
         <div class="cont">
           {{ bugurt.text|escape|linebreaksbr }}

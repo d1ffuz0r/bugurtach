@@ -1,9 +1,12 @@
-{% extends "base.html" %}{% block content %}
+{% extends "base.html" %}
+{% block rss %}/bugurts/rss/{% endblock %}
+{% block content %}
       <div id="home-logo" class="box1">
         <div><a href="/"><img src="{{ STATIC_URL }}images/front-logo.png" alt=""></a></div>
       </div>
       <div class="box1 home_l">
-        <div class="box-title"><h3><a href="/bugurts/">Новые бугурты</a></h3></div>
+        <div class="box-title"><h3><a href="/bugurts/">Новые бугурты</a>
+            <a class="rss-link" href="/bugurts/rss/" title="Въеби RSS'ца"><img src="{{ STATIC_URL }}images/rss.gif" alt="RSS"></a></h3></div>
         <ul id="newbugg" style="margin-left: 20px;">{% if latest_bugurts %}{% for bugurt in latest_bugurts %}
           <li><a href="{{ bugurt.get_absolute_url }}">{{ bugurt.name }}</a> от <a href="/user/{{ bugurt.author }}/">{{ bugurt.author }}</a></li>{% endfor %}{% else %}<li><a>Нет бугуртов</a></li>{% endif %}
         </ul>

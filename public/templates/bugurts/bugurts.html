@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% block content %}{% if bugurts %}{% for bugurt in bugurts %}
+{% extends "base.html" %}{% block rss %}{{ rss_link }}{% endblock %}{% block content %}{% if bugurts %}{% for bugurt in bugurts %}
       <div class="box1">
         <div class="box-title">
           <h3><a href="/bugurts/{{ bugurt.name }}/">{{ bugurt.name }}</a> :: {{ bugurt.date|date:'' }} :: <a href="#">{{ bugurt.author }}</a>{% include 'includes/likes.html' %}</h3>

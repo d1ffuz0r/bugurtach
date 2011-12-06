@@ -85,10 +85,12 @@ nav {
     margin: 10px;
 }
 
-.box1 img {
+/*.box1 img {
     margin-right: 10px;
+}*/
+.rss-link{
+    float: right;
 }
-
 .box1 h3 {
     position: relative;
     background: none repeat scroll 0 0 rgb(255, 255, 255);
