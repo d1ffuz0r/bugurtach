@@ -5,6 +5,7 @@ from bugurtach.models import Bugurt, User, Tag
 
 
 class UserFeed(Feed):
+    """Rss feed for :username: user"""
     title = u"Bugurtach.tk. Cамые сочные бугурты"
     link = u"/bugurts/"
 
@@ -28,6 +29,7 @@ class UserFeed(Feed):
 
 
 class TagFeed(Feed):
+    """Rss feed for :name: tag"""
     title = u"Bugurtach.tk. Cамые сочные бугурты"
     link = u"/tags/"
 
@@ -51,6 +53,7 @@ class TagFeed(Feed):
 
 
 class BugurtsFeed(Feed):
+    """Rss feed for all bugurts"""
     title = u"Bugurtach.tk. Cамые сочные бугурты"
     link = u"/bugurts/"
 

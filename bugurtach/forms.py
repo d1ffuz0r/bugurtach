@@ -9,6 +9,7 @@ prepare = lambda string: filter(
 
 
 class AddBugurt(forms.ModelForm):
+    """Form fore create bugurt page"""
     class Meta:
         model = Bugurt
         fields = ("name", "text", "author")
@@ -19,6 +20,7 @@ class AddBugurt(forms.ModelForm):
         }
 
     def clean(self):
+        """Prepare data for save"""
         tags = set(prepare(self.data["tags"]))
         proofs = set(prepare(self.data["proofs"]))
         if not tags:
@@ -48,6 +50,7 @@ class AddBugurt(forms.ModelForm):
 
 
 class EditBugurt(forms.ModelForm):
+    """Form for edit bugurt"""
     class Meta:
         model = Bugurt
         fields = ("name", "text")
@@ -61,12 +64,14 @@ class EditBugurt(forms.ModelForm):
 
 
 class AddTag(forms.Form):
+    """Form for append tag in bugurt"""
     title = forms.CharField(label="", widget=forms.TextInput(
         attrs={"title": "Одно название тега"})
     )
 
 
 class AddProof(forms.Form):
+    """Form for append proof in bugurt"""
     link = forms.CharField(label="", widget=forms.TextInput(
         attrs={"title": "Один линк пруфа"})
     )

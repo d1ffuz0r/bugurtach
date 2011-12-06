@@ -8,7 +8,7 @@ from django.utils.simplejson import dumps
 
 
 def render_to(template):
-    """decorator for rendering views to template"""
+    """Decorator for rendering views to template"""
     def renderer(func):
         @wraps(func)
         #@cache_control(must_revalidate=True, max_age=3600)
@@ -28,7 +28,7 @@ def render_to(template):
 
 
 def render_json(func):
-    """decorator for rendering data as json"""
+    """Decorator for rendering data as json"""
     def wrap(request, *args, **kwargs):
         response = None
         try:
@@ -41,7 +41,7 @@ def render_json(func):
 
 
 def check_ajax(func):
-    """decorator for check on login and ajax method"""
+    """Decorator for check on login and ajax method"""
     def wrap(request, *args, **kwargs):
         if request.is_ajax():
             if request.user.is_authenticated():

@@ -10,6 +10,7 @@ from decorators import render_to
 
 @render_to("home.html")
 def homepage(request):
+    """Home page"""
     return {"tags": Tag.all(),
             "top_bugurts": Bugurt.manager.top(),
             "latest_bugurts": Bugurt.manager.latest(),
@@ -19,6 +20,7 @@ def homepage(request):
 @login_required(login_url="/login/")
 @render_to("settings.html")
 def user_settings(request):
+    """User settings page"""
     msg = ""
     if request.POST:
         form_password = PasswordChangeForm(request.user, request.POST)
@@ -33,6 +35,7 @@ def user_settings(request):
 
 @render_to("registration/registration.html")
 def registration(request):
+    """Registration page"""
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -48,17 +51,20 @@ def registration(request):
 
 @render_to("bugurts/bugurts.html")
 def all_bugurts(request):
+    """All bugurts page"""
     return {"bugurts": Bugurt.manager.all()}
 
 
 @render_to("bugurts/bugurts.html")
 def top_bugurts(request):
+    """Top bugurts page"""
     return {"bugurts": Bugurt.manager.top()}
 
 
 @login_required(login_url="/login/")
 @render_to("bugurts/add.html")
 def add_bugurt(request):
+    """Create bugurt page"""
     user = request.user
     if request.method == "POST":
         form = AddBugurt(request.POST)
@@ -73,6 +79,7 @@ def add_bugurt(request):
 @login_required(login_url="/login/")
 @render_to("bugurts/edit.html")
 def edit_bugurt(request, name):
+    """Edit bugurt page"""
     bugurt = Bugurt.manager.get_by_name(name)
     if request.user.username == bugurt.author.username:
         if request.POST:
@@ -96,6 +103,7 @@ def edit_bugurt(request, name):
 
 @login_required(login_url="/login/")
 def delete_bugurt(request, name):
+    """Delete bugurt page"""
     bugurt = Bugurt.manager.get_by_name(name)
     if request.user.username == bugurt.author.username:
         bugurt.delete()
@@ -116,6 +124,7 @@ def view_bugurt(request, bugurt):
 
 @render_to("bugurts/bugurts.html")
 def view_user(request, username):
+    """All bugurts user"""
     bugurt_objects = Bugurt.manager.get_by_author(username)
     if bugurt_objects:
         return {"bugurts": bugurt_objects,
@@ -126,10 +135,12 @@ def view_user(request, username):
 
 @render_to("bugurts/bugurts.html")
 def view_tags(request, tag):
+    """All bugurts for tag"""
     return {"bugurts": Bugurt.manager.get_by_tag(tag),
             "rss_link": "/tags/%s/rss/" % tag}
 
 
 @render_to("tags.html")
 def view_all_tags(request):
+    """All tags page"""
     return {"tags": Tag.all()}
