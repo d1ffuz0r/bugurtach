@@ -5,14 +5,14 @@ from django.db import models
 
 
 class CustomUser(models.Model):
-    """Custom user profile
 
-    Keyword arguments:
-    user -- related with User model
-    bugurts -- All bugurts for user. Related with Bugurt model
-    likes -- All likes for user. Related with Like model
-    info -- Custom info for user
+    """
+    Custom user profile
 
+    @param user: related with User model
+    @param bugurts: All bugurts for user. Related with Bugurt model
+    @param likes: All likes for user. Related with Like model
+    @param info: Custom info for user
     """
     user = models.OneToOneField(User, unique=True)
     bugurts = models.ManyToManyField("Bugurt", blank=True)
@@ -43,11 +43,11 @@ post_save.connect(create_profile,
 
 
 class Tag(models.Model):
-    """Tag
+    """
+    Tag
 
     Keyword arguments:
-    title -- name for tag
-
+    @param title: name for tag
     """
     title = models.CharField(max_length=100)
 
@@ -57,10 +57,20 @@ class Tag(models.Model):
 
     @classmethod
     def all(cls):
-        """Return all tags"""
+        """
+        Return all tags
+
+        @param cls:
+        @return queryset:
+        """
         return cls.objects.all()
 
     def get_absolute_url(self):
+        """
+        Absolute url
+
+        @return unicode: link for tag
+        """
         return u"/tags/%s/" % self.title
 
     def __unicode__(self):
@@ -68,11 +78,10 @@ class Tag(models.Model):
 
 
 class Proof(models.Model):
-    """Proof
+    """
+    Proof
 
-    Keyword arguments:
-    link -- url for proof
-
+    @param link: url for proof
     """
     link = models.CharField(max_length=500)
 
@@ -91,11 +100,11 @@ class BugurtManager(models.Manager):
         return self.get_query_set().order_by("-date")
 
     def get_by_name(self, name):
-        """Return bugurt for name
+        """
+        Return bugurt for name
 
-        Keyword arguments:
-        name -- name for search bugurt
-
+        @param name: name for search bugurt
+        @return queryset|bool:
         """
         result = self.get_query_set().filter(name=name)
         if result:
@@ -104,11 +113,11 @@ class BugurtManager(models.Manager):
             return None
 
     def get_by_author(self, username):
-        """Return bugurt for author
+        """
+        Absolute url
 
-        Keyword arguments:
-        username -- author for search bugurt
-
+        @param username: name
+        @return unicode: link for tag
         """
         result = self.get_query_set().filter(
             author=User.objects.get(username=username)
@@ -119,24 +128,22 @@ class BugurtManager(models.Manager):
             return None
 
     def get_by_tag(self, tag):
-        """Return bugurts for tag
+        """
+        Return bugurts for tag
 
-        Keyword arguments:
-        tag -- name tag for search bugurt
-
+        @param tag: name tag for search bugurt
         """
         tag_id = Tag.objects.get(title=tag)
         result = self.get_query_set().filter(tags=tag_id)
         return result
 
     def like(self, user, bugurt, type):
-        """Like or Dislike bugurt
+        """
+        Like or Dislike bugurt
 
-        Keyword arguments:
-        user -- id for user
-        bugurt -- id for bugurt
-        type -- like or dislike bugurt. aviable(0 or 1)
-
+        @param user: id for user
+        @param bugurt: id for bugurt
+        @param type: like or dislike bugurt. aviable(0 or 1)
         """
         if Like.objects.filter(user_id=user).filter(bugurt_id=bugurt):
             return False
@@ -163,20 +170,19 @@ class BugurtManager(models.Manager):
 
 
 class Bugurt(models.Model):
-    """Bugurt model
+    """
+    Bugurt model
 
-    Keyword arguments:
-    name -- name bugurt. length=100
-    text -- text bugurt. length=10000
-    date -- date created bugurt. default(now)
-    likes -- likes bugurt. default(0)
-    author -- author bugurt. related with model User
-    tags -- tags bugurt. related with model Tag
-    proofs -- proofs bugurt. related with model Proof
-    comments -- commentaries bugurt. related with model Comments
-    objects -- manager BugurtManager
-    manager -- BugurtManager
-
+    @param name: name bugurt. length=100
+    @param text: text bugurt. length=10000
+    @param date: date created bugurt. default(now)
+    @param likes: likes bugurt. default(0)
+    @param author: author bugurt. related with model User
+    @param tags: tags bugurt. related with model Tag
+    @param proofs: proofs bugurt. related with model Proof
+    @param comments: commentaries bugurt. related with model Comments
+    @param objects: manager BugurtManager
+    @param manager: BugurtManager
     """
     name = models.CharField(max_length=100, verbose_name=u"Заголовок")
     text = models.TextField(max_length=10000, verbose_name=u"Текст")
@@ -201,16 +207,20 @@ class Bugurt(models.Model):
         return self.name
 
     def get_absolute_url(self):
+        """
+        Absolute url
+
+        @return unicode: link for bugurt
+        """
         return u"/bugurts/%s/" % self.name
 
 
 class BugurtTags(models.Model):
-    """Tags for Bugurt. Model for related Bugurt and Tag
+    """
+    Tags for Bugurt. Model for related Bugurt and Tag
 
-    Keyword arguments:
-    bugurt -- bugurt object
-    tag -- tag object
-
+    @param bugurt: bugurt object
+    @param tag: tag object
     """
     bugurt = models.ForeignKey(Bugurt)
     tag = models.ForeignKey(Tag)
@@ -224,12 +234,11 @@ class BugurtTags(models.Model):
 
 
 class BugurtProofs(models.Model):
-    """Proofs for Bugurt. Model for related Bugurt and Proof
+    """
+    Proofs for Bugurt. Model for related Bugurt and Proof
 
-    Keyword arguments:
-    bugurt -- bugurt object
-    proof -- proof object
-
+    @param bugurt: bugurt object
+    @param proof: proof object
     """
     bugurt = models.ForeignKey(Bugurt)
     proof = models.ForeignKey(Proof)
@@ -243,13 +252,12 @@ class BugurtProofs(models.Model):
 
 
 class Like(models.Model):
-    """Like
+    """
+    Like
 
-    Keyword arguments:
-    user_id -- user object
-    bugurt_id -- bugurt object
-    type -- 1(like) or 0(dislike)
-
+    @param user_id: user object
+    @param bugurt_id: bugurt object
+    @param type: 1(like) or 0(dislike)
     """
     CHOISES = (("1", "like"),
                ("0", "dislike"))
@@ -266,14 +274,13 @@ class Like(models.Model):
 
 
 class Comments(models.Model):
-    """Commentaries
+    """
+    Commentaries
 
-    Keyword arguments:
-    author -- user object
-    bugurt -- bugurt object
-    date -- date create commentaries. default(now)
-    text -- text commentaries
-
+    @param author: user object
+    @param bugurt: bugurt object
+    @param date: date create commentaries. default(now)
+    @param text: text commentaries
     """
     author = models.ForeignKey(User)
     bugurt = models.ForeignKey(Bugurt, related_name="bugurtcomments")
