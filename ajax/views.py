@@ -126,9 +126,7 @@ def delete_proof(request):
 
 @check_ajax
 def autocomplite(request):
-    result = ""
     text = escape(request.POST["text"])
-    tags = Tag.objects.filter(title__contains=text)
-    for tag in tags:
-        result += "<li>%s</li>" % tag.title
-    return HttpResponse(result)
+    tags = Tag.objects.filter(title__icontains=text)
+    result = ["<li>%s</li>" % tag.title for tag in tags]
+    return HttpResponse(result.join())
